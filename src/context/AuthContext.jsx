@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react"
 
-const userModel = {
+export const userModel = {
     name: '',
     lastName: '',
     username: '',
