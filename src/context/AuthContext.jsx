@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react"
+import { createContext, useContext, useMemo, useState } from "react"
 
 const userModel = {
     name: '',
@@ -11,6 +11,8 @@ const userModel = {
     deactivated: false,
     rol: ''
 }
+
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState({...userModel})
@@ -25,6 +27,6 @@ export const AuthProvider = ({children}) => {
             {children}
         </AuthContext.Provider>
     )
-}
+};
 
-export const useAuth = () => useContext(AuthProvider)
+export const useAuth = () => useContext(AuthContext)
