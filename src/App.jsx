@@ -7,14 +7,17 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Profile from './pages/Profile.jsx';
+import { AuthenticateGuard } from './components/guards/AuthenticateGuard.jsx';
 
 function App() {
   return (
     <Routes>
       
-	  <Route element={<AppLayout />}>
-	  	<Route path='/' element={<Home />} />
-		<Route path='/profile' element={<Profile />} />
+	  <Route element={<AuthenticateGuard/>}>
+		<Route element={<AppLayout />}>
+			<Route path='/' element={<Home />} />
+			<Route path='/profile' element={<Profile />} />
+		</Route>
 	  </Route>
 
 	  <Route element={<AuthLayout />}>
