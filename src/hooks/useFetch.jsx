@@ -1,58 +1,77 @@
 import { useState } from "react"
 
-export const useFetch = (url, method = 'GET', data = {}) => {
-    const [dataReturn, setDataReturn] = useState({
+const API_URL = import.meta.env.VITE_API_URL;
+
+export const useFetch = () => {
+    const [response, setResponse] = useState({
         data: null,
-        loading: false,
         error: null
     })
 
-    const validMethods = ['POST','PUT','GET','DELETE','PATCH'];
+    const [loading, setLoading] = useState(false)
 
-    const generateAbort = () => {
-        const abort = new AbortController()
-        return { abort, signal: abort.signal }
+    const validMethods = ['POST','PUT','GET','DELETE','PATCH'];
+    
+    const abortControllerRef = useRef();
+
+    const generateAbort = (onlyAbort = false) => {
+        
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+        
+        if (onlyAbort) {
+            abortControllerRef.current = null;
+            return;
+        }
+
+        abortControllerRef.current = new AbortController();
+        
+        return abortControllerRef.current.signal;
     }
 
-    const execFetch = async (signal) => {
+    const execute = async (url, method = 'GET', data = {}) => {
         if (!validMethods.includes(method.toUpperCase())) throw new Error(`Metodo no valido: ${method}`);
 
-        const responseJson = {
+        const result = {
             data: null,
-            loading: false,
             error: null
         }
 
         try {
-            setDataReturn({data: null, loading: true, error: null})
-            const response = await fetch(url, {
-                method: method.toUpperCase(),
-                signal
-            })
+            const signal = generateAbort()
 
-            if (!response.ok) {
-                throw new Error(`Error en la url ${url} : ${response.status} -> ${response.statusText} `);
+            setLoading(true)
+            
+            const res = await fetch(API_URL + url, {
+              method: method.toUpperCase(),
+              signal,
+            });
+
+            if (!res.ok) {
+                throw new Error(`Error en la url ${url} : ${res.status} -> ${res.statusText} `);
             }
 
-            const responseData = response.json()
-            responseJson.data = responseData
+            const responseData = await res.json()
+            result.data = responseData
         } catch (error) {
-            responseJson.error = error instanceof Error ? error : new Error('Error desconocido')
+            result.error = error instanceof Error ? error : new Error('Error desconocido')
+        } finally {
+            setLoading(false)
         }
 
-        setDataReturn({ data: responseJson.data, loading: responseJson.loading, error: responseJson.error });
+        setResponse({ data: result.data, error: result.error });
     }
 
     useEffect(() => {
-        const {abort, signal} = generateAbort()
-        execFetch(signal)
-
         return () => {
-            abort.abort()
+            generateAbort(true)
         }
     }, [url, method, data])
 
     return {
-        dataReturn
+        response,
+        loading,
+        execute
     }
 }
