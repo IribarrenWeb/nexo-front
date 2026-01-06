@@ -1,20 +1,27 @@
-import { redirect } from "react-router-dom";
 import { toast } from "sonner";
+import { useFetch } from "../hooks/useFetch";
+import { useNavigate } from "react-router-dom";
 
+const BASE_API = 'auth/' 
 export const authService = () => {
-    const login = async (data) => {
-        const { response, loading, execute } = useFetch();
+    const { execute } = useFetch();
+    const navigate = useNavigate()
+    
+    const login = async (formData) => {
+        try {
+            const { data, error } = await execute(`${BASE_API}login`, 'POST', formData);
+    
+            if (data?.token) {
+                navigate('/')
+                return 
+            }
 
-        await execute('/login', 'POST', data);
-
-        if (response.data.token) {
-            redirect('/')
-            return 
+            toast.error(error.message)
+            
+            return data;
+        } catch (error) {
+            toast.error('Error desconocido')
         }
-
-        toast.error(response.error)
-        
-        return response;
     }
 
     return {
