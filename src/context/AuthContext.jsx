@@ -19,7 +19,8 @@ export const AuthProvider = ({children}) => {
 
     const toProvide = useMemo(() => ({
         user,
-        setUser
+        setUser,
+        isAuth: localStorage.getItem('access_token')?.length ? true : false
     }), [user])
 
     return (
