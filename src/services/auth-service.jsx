@@ -24,7 +24,22 @@ export const authService = () => {
         }
     }
 
+    const me = async () => {
+        try {
+            const { data, error } = await execute(`${BASE_API}me`, 'GET');
+            if (error) {
+                toast.error(error.message)
+                return null
+            }
+            return data;
+        } catch (error) {
+            toast.error('Error desconocido')
+            return null
+        }
+    }
+
     return {
-        login
+        login,
+        me
     }
 }
