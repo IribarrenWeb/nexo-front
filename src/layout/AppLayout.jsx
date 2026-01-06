@@ -1,26 +1,28 @@
 import { Outlet } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar.jsx";
+import Sidebar from "../components/general/Sidebar.jsx";
+import HeaderApp from "../components/general/HeaderApp.jsx";
 
 const AppLayout = () => {
     return (
-        <div className="min-h-screen bg-white">
-            <div className="max-w-7xl mx-auto flex">
+        <div className="flex h-screen bg-[#090126] text-white overflow-hidden">
 
-                <aside className="hidden sm:block w-20 xl:w-64 sticky top-0 h-screen border-r border-gray-100 p-4">
-                    <Sidebar />
-                </aside>
+            <Sidebar />
 
-                <main className="flex-1 min-w-0 border-r border-gray-100">
-                    <Outlet />
-                </main>
-
-                <aside className="hidden lg:block w-80 sticky top-0 h-screen p-4">
-                    <div className="bg-gray-50 rounded-xl p-4 h-full">
-                        <h2 className="font-bold text-gray-500 mb-4">Clippers virales</h2>
+            <div className="flex-1 flex flex-col min-w-0">
+                <HeaderApp />
+                <main className="felx-1 overflow-y-auto p-8">
+                    <div className="border-2 border-gray-700 rounded-lg p-6 bg-[#1e2128] shadow-sm h-full flex items-center justify-center">
+                        <Outlet />
                     </div>
-                </aside>
+                </main>
             </div>
+
+            {/* <aside className="hidden lg:block w-80 sticky top-0 h-screen p-4">
+                <div className="bg-gray-50 rounded-xl p-4 h-full">
+                    <h2 className="font-bold text-gray-500 mb-4">Clippers virales</h2>
+                </div>
+            </aside> */}
         </div>
     )
 }
