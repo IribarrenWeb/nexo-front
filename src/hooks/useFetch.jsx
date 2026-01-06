@@ -1,15 +1,8 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const useFetch = () => {
-    const [response, setResponse] = useState({
-        data: null,
-        error: null
-    })
-
-    const [loading, setLoading] = useState(false)
-
     const validMethods = ['POST','PUT','GET','DELETE','PATCH'];
     
     const abortControllerRef = useRef();
@@ -41,12 +34,19 @@ export const useFetch = () => {
         try {
             const signal = generateAbort()
 
-            setLoading(true)
-            
-            const res = await fetch(API_URL + url, {
+            const options = {
               method: method.toUpperCase(),
               signal,
-            });
+              headers: {
+                'Content-Type': 'application/json',
+              }
+            }
+
+            if (method.toUpperCase() != 'GET') {
+                options.body = JSON.stringify(data);
+            }
+
+            const res = await fetch(API_URL + url, options);
 
             if (!res.ok) {
                 throw new Error(`Error en la url ${url} : ${res.status} -> ${res.statusText} `);
@@ -56,22 +56,17 @@ export const useFetch = () => {
             result.data = responseData
         } catch (error) {
             result.error = error instanceof Error ? error : new Error('Error desconocido')
-        } finally {
-            setLoading(false)
         }
-
-        setResponse({ data: result.data, error: result.error });
+        return result;
     }
 
     useEffect(() => {
         return () => {
             generateAbort(true)
         }
-    }, [url, method, data])
+    }, [])
 
     return {
-        response,
-        loading,
         execute
     }
 }
