@@ -2,7 +2,46 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "../../hooks/useForm";
 import { userModel } from "../../context/AuthContext";
 
-const RegisterForm = ({setData}) => {
+const formFields = [
+    {
+        name: 'username',
+        label: 'Username',
+        type: 'text',
+        required: true,
+    },
+    {
+        name: 'email',
+        label: 'Email',
+        type: 'email',
+        required: true,
+    },
+    {
+        name: 'name',
+        label: 'Nombre completo',
+        type: 'text',
+        required: true,
+    },
+    {
+        name: 'lastName',
+        label: 'Apellido',
+        type: 'text',
+        required: true,
+    },
+    {
+        name: 'password',
+        label: 'Contraseña',
+        type: 'password',
+        required: true,
+    },
+    {
+        name: 'rePassword',
+        label: 'Repetir Contraseña',
+        type: 'password',
+        required: true,
+    },
+]
+
+const RegisterForm = ({setData, errorFields, clearError}) => {
     const { formValues, handleChanges } = useForm({
         ...userModel
     })
@@ -13,111 +52,36 @@ const RegisterForm = ({setData}) => {
 
     return (
         <form action="#" method="POST" className="space-y-6">
-            <div>
-                <label
-                    className="block text-sm/6 font-medium text-gray-500"
-                >
-                    Username
-                </label>
-                <div className="mt-2">
-                    <input
-                        name="username"
-                        required
-                        value={formValues.username}
-                        className="block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-                        onChange={handleChanges}
-                    />
-                </div>
-            </div>
-
-            <div>
-                <label
-                    className="block text-sm/6 font-medium text-gray-500"
-                >
-                    Email
-                </label>
-                <div className="mt-2">
-                    <input
-                        name="email"
-                        required
-                        value={formValues.email}
-                        className="block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-                        onChange={handleChanges}
-                    />
-                </div>
-            </div>
-
-            <div>
-                <label
-                    className="block text-sm/6 font-medium text-gray-500"
-                >
-                    Nombre completo
-                </label>
-                <div className="mt-2">
-                    <input
-                        name="name"
-                        required
-                        value={formValues.name}
-                        className="block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-                        onChange={handleChanges}
-                    />
-                </div>
-            </div>
-
-            <div>
-                <label
-                    className="block text-sm/6 font-medium text-gray-500"
-                >
-                    Apellido
-                </label>
-                <div className="mt-2">
-                    <input
-                        name="lastName"
-                        required
-                        value={formValues.lastName}
-                        className="block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-                        onChange={handleChanges}
-                    />
-                </div>
-            </div>
-
-            <div>
-                <div className="flex items-center justify-between">
-                    <label
-                        className="block text-sm/6 font-medium text-gray-500"
-                    >
-                        Contraseña
-                    </label>
-                </div>
-                <div className="mt-2">
-                    <input
-                        name="password"
-                        type="password"
-                        required
-                        value={formValues.password}
-                        onChange={handleChanges}
-                        className="block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-                    />
-                </div>
-            </div>
-
-            <div>
-                <label
-                    className="block text-sm/6 font-medium text-gray-500"
-                >
-                    Repetir Contraseña
-                </label>
-                <div className="mt-2">
-                    <input
-                        name="rePassword"
-                        type="password"
-                        required
-                        value={formValues.rePassword}
-                        onChange={handleChanges}
-                        className="block w-full rounded-md bg-gray-700 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-                    />
-                </div>
-            </div>
+            {
+                formFields.map(({name, label, type, required}) => (
+                    <div key={name}>
+                        <label
+                            className="block text-sm/6 font-medium text-gray-500"
+                        >
+                            {label}
+                        </label>
+                        <div className="mt-2">
+                            <input
+                                name={name}
+                                type={type}
+                                required={required}
+                                value={formValues[name]}
+                                className={"block w-full rounded-md bg-gray-200 px-3 py-1.5 text-base text-grey-700 outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" + (errorFields.find(e => e.field === name) ? ' border-2 border-red-500' : '')}
+                                placeholder={label}
+                                onChange={handleChanges}
+                                onFocus={clearError.bind(this, name)}
+                            />
+                            {
+                                errorFields.find(e => e.field === name) ? (
+                                    <p className="mt-1 text-sm text-red-500">
+                                        {errorFields.find(e => e.field === name).message}
+                                    </p>
+                                ) : null
+                            }
+                        </div>
+                    </div>
+                ))
+            }
         </form>
     );
 }
