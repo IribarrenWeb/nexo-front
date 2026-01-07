@@ -49,6 +49,8 @@ export const useFetch = () => {
 
             if (method.toUpperCase() != 'GET') {
                 options.body = JSON.stringify(data);
+            } else {
+                url += Object.keys(data).length ? '?' + new URLSearchParams(data).toString() : '';
             }
 
             const res = await fetch(API_URL + url, options);
