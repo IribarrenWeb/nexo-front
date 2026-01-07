@@ -8,7 +8,7 @@ const HeaderApp = () => {
                 <form className="relative flex flex-1" action="#" method="GET">
                     <Search className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400" />
                     <input
-                        className="block h-full w-full border-0 bg-transparent py-0 pl-8 pr-0 text-white placeholder:text-gray-400 focus:ring-0 sm:text-sm"
+                        className="block h-full w-full border-0 bg-transparent py-0 pl-8 pr-0 text-white placeholder:text-gray-400 focus:ring-0 sm:text-sm outline-0"
                         placeholder="Buscar..."
                     />
                 </form>
