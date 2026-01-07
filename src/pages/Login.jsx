@@ -4,6 +4,8 @@ import { authService } from "../services/auth-service";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "../context/AuthContext";
+import Button from "../components/ui/Button";
+import Link from "../components/ui/Link";
 
 const Login = () => {
     const [data, setData] = useState({});
@@ -70,15 +72,15 @@ const Login = () => {
 
           <LoginForm setData={setData} errorFields={errorFields} clearError={clearErrorKey} />
 
-          <button disabled={loading} onClick={toLogin} className="mt-9 flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-            {loading ? 'Entrando...' : 'Entrar'}
-          </button>
+          <Button loading={loading} onClick={toLogin}>
+            Entrar
+          </Button>
 
           <div className="mt-4 text-sm text-center text-gray-500">
             ¿No tienes una cuenta?{' '}
-            <a onClick={redirectToRegister} href="#" className="font-medium text-indigo-500 hover:text-indigo-400">
-              Regístrate
-            </a>
+            <Link onClick={redirectToRegister}>
+                Registrarse
+            </Link>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import RegisterForm from "../components/forms/RegisterForm";
 import { userService } from "../services/user-service";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import Button from "../components/ui/Button";
 
 const Register = () => {
     const [data, setData] = useState({});
@@ -39,7 +40,7 @@ const Register = () => {
         return errorFieldsTemp.length === 0;
     }
 
-    const resgister = () => {
+    const register = () => {
         if (!validateData()) return;
 
         toast.promise(
@@ -62,9 +63,9 @@ const Register = () => {
                     Registro de Usuario
                 </h1>
                 <RegisterForm setData={setData} errorFields={errorFields} clearError={clearErrorKey}  />
-                <button onClick={resgister} className="mt-9 flex w-96 justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                <Button onClick={register}>
                     Registrarse
-                </button>
+                </Button>
             </div>
         </div>
     );
