@@ -1,5 +1,7 @@
 import { useCallback, useState } from "react";
 
+const VALID_RULES = ['required'];
+
 const useValidator = (data, rules) => {
 
     const [errors, setErrors] = useState([]);
@@ -51,4 +53,7 @@ const useValidator = (data, rules) => {
     }
 }
 
-export default useValidator;
+export {
+    useValidator,
+    VALID_RULES,
+};
