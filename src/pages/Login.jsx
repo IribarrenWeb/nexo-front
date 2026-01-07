@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import LoginForm from "../components/forms/LoginForm";
 import { authService } from "../services/auth-service";
 import { useNavigate } from "react-router-dom";
@@ -8,20 +8,21 @@ import Button from "../components/ui/Button";
 import Link from "../components/ui/Link";
 
 const Login = () => {
-    const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
     const { setUser } = useAuth();
-
-    const [ errorFields, setErrorFields ] = useState([]);
+    const ref = useRef();
 
     const { login } = authService();
     
     const navigate = useNavigate();
 
     const toLogin = () => {
-        if (!validateData()) return;
+        if (!ref.current.validateData()) return;
+        
         setLoading(true);
         
+        const data = ref.current.getFormValues();
+
         const loginPromise = login(data);
         
         toast.promise(
@@ -45,24 +46,6 @@ const Login = () => {
         navigate("/register");
     }
 
-    const validateData = () => {
-        const requiredFields = ['username', 'password'];
-        const errorFieldsTemp = [];
-        for (let field of requiredFields) {
-            if (!data[field]?.length) {
-                errorFieldsTemp.push({field, message: 'Este campo es obligatorio'});
-            }
-        }
-
-        setErrorFields(errorFieldsTemp);
-
-        return errorFieldsTemp.length === 0;
-    }
-
-    const clearErrorKey = (key) => {
-        setErrorFields(prev => prev.filter(e => e.field !== key));
-    }
-
     return (
       <div className="flex items-center justify-center">
         <div className="p-8 bg-white rounded-lg shadow-md w-96">
@@ -70,7 +53,7 @@ const Login = () => {
             Login
           </h1>
 
-          <LoginForm setData={setData} errorFields={errorFields} clearError={clearErrorKey} />
+          <LoginForm ref={ref} />
 
           <Button loading={loading} onClick={toLogin}>
             Entrar
