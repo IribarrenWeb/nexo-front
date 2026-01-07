@@ -9,7 +9,10 @@ export const userModel = {
     followings: [],
     followers: [],
     deactivated: false,
-    rol: ''
+    rol: '',
+    password: '',
+    email: '',
+    rePassword: '',
 }
 
 const AuthContext = createContext(null);
