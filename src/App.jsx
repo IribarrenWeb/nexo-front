@@ -8,6 +8,8 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Profile from './pages/Profile.jsx';
 import { AuthenticateGuard } from './components/guards/AuthenticateGuard.jsx';
+import Users from './pages/Users.jsx';
+import { RoleGuard } from './components/guards/RoleGuard.jsx';
 
 function App() {
   return (
@@ -17,6 +19,10 @@ function App() {
 		<Route element={<AppLayout />}>
 			<Route path='/' element={<Home />} />
 			<Route path='/profile' element={<Profile />} />
+			
+			<Route element={<RoleGuard role="admin"/>}>
+				<Route path='/users' element={<Users />} />
+			</Route>
 		</Route>
 	  </Route>
 
