@@ -2,20 +2,63 @@ import { useState } from "react";
 import LoginForm from "../components/forms/LoginForm";
 import { authService } from "../services/auth-service";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
     const [data, setData] = useState({});
+    const [loading, setLoading] = useState(false);
+    const { setUser } = useAuth();
+
+    const [ errorFields, setErrorFields ] = useState([]);
 
     const { login } = authService();
     
     const navigate = useNavigate();
 
     const toLogin = () => {
-        login(data);
+        if (!validateData()) return;
+        setLoading(true);
+        
+        const loginPromise = login(data);
+        
+        toast.promise(
+            loginPromise,
+            {
+                loading: 'Iniciando sesión...',
+                success: () => {
+                    navigate('/');
+                    return 'Sesión iniciada con éxito';
+                },
+                error: 'Error al iniciar sesión'
+            }
+        )
+
+        loginPromise.then((user) => {
+            setUser((u) => ({...u, ...user}))
+        }).finally(() => setLoading(false));
     }
 
     const redirectToRegister = () => {
         navigate("/register");
+    }
+
+    const validateData = () => {
+        const requiredFields = ['username', 'password'];
+        const errorFieldsTemp = [];
+        for (let field of requiredFields) {
+            if (!data[field]?.length) {
+                errorFieldsTemp.push({field, message: 'Este campo es obligatorio'});
+            }
+        }
+
+        setErrorFields(errorFieldsTemp);
+
+        return errorFieldsTemp.length === 0;
+    }
+
+    const clearErrorKey = (key) => {
+        setErrorFields(prev => prev.filter(e => e.field !== key));
     }
 
     return (
@@ -25,10 +68,10 @@ const Login = () => {
             Login
           </h1>
 
-          <LoginForm setData={setData} />
+          <LoginForm setData={setData} errorFields={errorFields} clearError={clearErrorKey} />
 
-          <button onClick={toLogin} className="mt-9 flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-            Entrar
+          <button disabled={loading} onClick={toLogin} className="mt-9 flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+            {loading ? 'Entrando...' : 'Entrar'}
           </button>
 
           <div className="mt-4 text-sm text-center text-gray-500">
