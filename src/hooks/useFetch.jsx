@@ -33,6 +33,7 @@ export const useFetch = () => {
 
         try {
             const signal = generateAbort()
+            const access_token = localStorage.getItem('access_token');
 
             const options = {
               method: method.toUpperCase(),
@@ -40,6 +41,10 @@ export const useFetch = () => {
               headers: {
                 'Content-Type': 'application/json',
               }
+            }
+
+            if (access_token) {
+                options.headers['Authorization'] = `Bearer ${access_token}`;
             }
 
             if (method.toUpperCase() != 'GET') {
