@@ -10,7 +10,7 @@ const Sidebar = () => {
     return (
         <aside className="flex w-72 flex-col bg-[#0F0140] border-r border-gray-800">
             <div className="flex h-16 items-center px-6">
-                <h1 className="text-2xl font-bold text-white">ClipperAPP</h1>
+                <h1 className="text-2xl font-bold text-white">Nexo.io</h1>
             </div>
             <nav className="flex-1 p-4 space-y-8 overflow-y-auto">
                 <ul className="-mx-2 space-y-1">
