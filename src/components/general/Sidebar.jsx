@@ -1,12 +1,16 @@
-import { LayoutDashboard, User } from "lucide-react";
+import { LayoutDashboard, User, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const menus = [
   { name: "Inicio", href: "/", icon: LayoutDashboard },
   { name: "Perfil", href: "/profile", icon: User },
+  { name: "Usuarios", href: "/users", icon: Users, role: "admin" },
 ];
 
 const Sidebar = () => {
+    const { user } = useAuth();
+
     return (
         <aside className="flex w-72 flex-col bg-[#0F0140] border-r border-gray-800">
             <div className="flex h-16 items-center px-6">
@@ -15,7 +19,7 @@ const Sidebar = () => {
             <nav className="flex-1 p-4 space-y-8 overflow-y-auto">
                 <ul className="-mx-2 space-y-1">
                     {
-                        menus.map((menu) => (
+                        menus.filter(m => !m.role || user.rol == m.role).map((menu) => (
                             <li key={menu.name}>
                                 <Link
                                     to={menu.href}
