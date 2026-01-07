@@ -18,7 +18,20 @@ export const userService = () => {
         }
     }
 
+    const index = async (params = {}) => {
+        try {
+            const { data, error } = await execute(`${BASE_API}`, 'GET', params);
+            if (error) {
+                return toast.error(error.message);
+            }
+            return data;
+        } catch (error) {
+            toast.error('Error desconocido')
+        }
+    }
+
     return {
         store,
+        index
     }
 }
