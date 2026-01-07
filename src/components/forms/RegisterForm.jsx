@@ -8,19 +8,19 @@ const formFields = [
         name: 'username',
         label: 'Username',
         type: 'text',
-        rules: ['required'],
+        rules: ['required','minLength:4' ],
     },
     {
         name: 'email',
         label: 'Email',
         type: 'email',
-        rules: ['required'],
+        rules: ['required','email'],
     },
     {
         name: 'name',
         label: 'Nombre completo',
         type: 'text',
-        rules: ['required'],
+        rules: ['required','minLength:3'],
     },
     {
         name: 'lastName',
@@ -32,20 +32,20 @@ const formFields = [
         name: 'password',
         label: 'Contraseña',
         type: 'password',
-        rules: ['required'],
+        rules: ['required','password'],
     },
     {
         name: 'rePassword',
         label: 'Repetir Contraseña',
         type: 'password',
-        rules: ['required'],
+        rules: ['required','match:password'],
     },
 ]
 
 const RegisterForm = ({ref}) => {
     const { formValues, errors, handleChanges, isValid } = useForm({
         ...userModel
-    }, formFields);
+    }, formFields, true);
 
     useImperativeHandle(ref, () => ({
         validateForm: () => isValid(),
