@@ -19,10 +19,16 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState({...userModel})
+    
+    const logout = () => {
+        setUser({...userModel})
+        localStorage.removeItem('access_token')
+    }
 
     const toProvide = useMemo(() => ({
         user,
         setUser,
+        logout,
         isAuth: localStorage.getItem('access_token')?.length ? true : false
     }), [user])
 
