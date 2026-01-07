@@ -2,8 +2,22 @@ import { Outlet } from "react-router-dom";
 
 import Sidebar from "../components/general/Sidebar.jsx";
 import HeaderApp from "../components/general/HeaderApp.jsx";
+import { authService } from "../services/auth-service.jsx";
+import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const AppLayout = () => {
+    const { me } = authService();
+    const { setUser } = useAuth();
+    
+    useEffect(() => {
+        me().then((user) => {
+            if (!user) return;
+            console.log('USER', user);
+            setUser(user);
+        });
+    }, []);
+
     return (
         <div className="flex h-screen bg-[#090126] text-white overflow-hidden">
 
