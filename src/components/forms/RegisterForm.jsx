@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useImperativeHandle } from "react";
 import { useForm } from "../../hooks/useForm";
 import { userModel } from "../../context/AuthContext";
 import Input from "../ui/Input";
@@ -8,53 +8,54 @@ const formFields = [
         name: 'username',
         label: 'Username',
         type: 'text',
-        required: true,
+        rules: ['required'],
     },
     {
         name: 'email',
         label: 'Email',
         type: 'email',
-        required: true,
+        rules: ['required'],
     },
     {
         name: 'name',
         label: 'Nombre completo',
         type: 'text',
-        required: true,
+        rules: ['required'],
     },
     {
         name: 'lastName',
         label: 'Apellido',
         type: 'text',
-        required: true,
+        rules: ['required'],
     },
     {
         name: 'password',
         label: 'Contraseña',
         type: 'password',
-        required: true,
+        rules: ['required'],
     },
     {
         name: 'rePassword',
         label: 'Repetir Contraseña',
         type: 'password',
-        required: true,
+        rules: ['required'],
     },
 ]
 
-const RegisterForm = ({setData, errorFields, clearError}) => {
-    const { formValues, handleChanges } = useForm({
+const RegisterForm = ({ref}) => {
+    const { formValues, errors, handleChanges, isValid } = useForm({
         ...userModel
-    })
+    }, formFields);
 
-    useEffect(() => {
-        setData({...formValues})
-    }, [formValues])
-
+    useImperativeHandle(ref, () => ({
+        validateForm: () => isValid(),
+        getFormValues: () => ({...formValues}),
+    }))
+    
     return (
         <form action="#" method="POST" className="space-y-6">
             {
-                formFields.map(({name, label, type, required}) => (
+                formFields.map(({name, label, type}) => (
                     <div key={name}>
                         <label
                             className="block text-sm/6 font-medium text-gray-500"
@@ -65,12 +66,10 @@ const RegisterForm = ({setData, errorFields, clearError}) => {
                             <Input 
                                 name={name}
                                 type={type}
-                                required={required}
                                 value={formValues[name]}
                                 placeholder={label}
                                 onChange={handleChanges}
-                                onFocus={clearError.bind(this, name)}
-                                errorMessage={errorFields.find(e => e.field === name)?.message}
+                                errorMessage={errors.find(e => e.field === name)?.message}
                             />
                         </div>
                     </div>

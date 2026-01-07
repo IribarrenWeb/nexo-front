@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import RegisterForm from "../components/forms/RegisterForm";
 import { userService } from "../services/user-service";
 import { toast } from "sonner";
@@ -6,43 +6,13 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 
 const Register = () => {
-    const [data, setData] = useState({});
+    const ref = useRef();
     const { store } = userService();
     const navigate = useNavigate();
     
-    const [errorFields, setErrorFields] = useState([]);
-
-    const clearErrorKey = (key) => {
-        setErrorFields(prev => prev.filter(e => e.field !== key));
-    }
-
-    const validateData = () => {
-        const { password, rePassword } = data;
-
-        const requiredFields = ['email', 'username', 'name', 'lastName'];
-        const errorFieldsTemp = [];
-
-        if (password !== rePassword) {
-            errorFieldsTemp.push({field: 'rePassword', message: 'Las contraseñas no coinciden'});
-        }
-        if (password.length < 6) {
-            errorFieldsTemp.push({field: 'password', message: 'La contraseña debe tener al menos 6 caracteres'});
-        }
-
-        requiredFields.forEach(field => {
-            if (!data[field]?.length) {
-                errorFieldsTemp.push({field, message: 'Este campo es obligatorio'});
-            }
-        });
-
-        setErrorFields(errorFieldsTemp);
-
-        return errorFieldsTemp.length === 0;
-    }
-
     const register = () => {
-        if (!validateData()) return;
-
+        if (!ref.current.validateForm()) return;
+        const data = ref.current.getFormValues();
         toast.promise(
             store(data),
             {
@@ -62,7 +32,7 @@ const Register = () => {
                 <h1 className="text-4xl font-bold text-blue-600 mb-4">
                     Registro de Usuario
                 </h1>
-                <RegisterForm setData={setData} errorFields={errorFields} clearError={clearErrorKey}  />
+                <RegisterForm ref={ref}/>
                 <Button onClick={register}>
                     Registrarse
                 </Button>
