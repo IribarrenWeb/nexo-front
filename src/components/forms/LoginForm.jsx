@@ -36,7 +36,7 @@ const LoginForm = ({ ref }) => {
         <form action="#" method="POST" className="space-y-6">
             {
                 loginDefinitions.map(({name, label, type}) => (
-                    <div>
+                    <div key={name}>
                         <label
                             className="block text-sm/6 font-medium text-gray-500"
                         >
