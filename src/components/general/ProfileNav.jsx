@@ -1,13 +1,26 @@
-import { ChevronDown, UserCircle } from "lucide-react";
+import { UserCircle } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
+import Dropdown from "../ui/Dropdown";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProfileNav = () => {
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+    useEffect(() => {
+        console.log('ProfileNav USER', user);
+    }, [user]);
+
+    const toLogout = () => {
+        logout();
+        navigate('/login');
+    }
     return (
         <div className="flex items-center">
-            <UserCircle className="h-8 w-8 text-gray-400" />
-            <span className="ml-4 hidden text-sm font-semibold text-white lg:flex lg:items-center">
-                Keinher
-                <ChevronDown className="ml-2 h-5 w-5 text-gray-400" />
-            </span>
+            <Dropdown actions={[{ label: 'Logout', onClick: () => toLogout() }]}>
+                <UserCircle className="h-8 w-8 text-gray-400" />
+                {user ? user.name : 'ss'}
+            </Dropdown>
         </div>
     );
 };
