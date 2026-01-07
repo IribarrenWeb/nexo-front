@@ -27,7 +27,9 @@ export const authService = () => {
         try {
             const { data, error } = await execute(`${BASE_API}me`, 'GET');
             if (error) {
+                if (error.message == 'signal is aborted without reason') return null
                 toast.error(error.message)
+                localStorage.removeItem('access_token')
                 return null
             }
             return data;
