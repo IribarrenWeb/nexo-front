@@ -1,16 +1,17 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import { cn } from "../../utils/helpers";
 
-export const Dropdown = ({children, actions}) => {
+export const Dropdown = ({children, actions, className, triggerClass}) => {
     const [droped, setDroped] = useState(false);
     
     return (
-        <div className="relative inline-block text-left">
+        <div className={cn('relative inline-block text-left', className)}>
             <div>
-                <button onClick={() => setDroped(true)} type="button" className="inline-flex w-full justify-center items-center rounded-md bg-opacity-10 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                <button onClick={() => setDroped(true)} type="button" className={cn("inline-flex w-full justify-between items-center rounded-md bg-opacity-10 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-20 focus:outline-none cursor-pointer", triggerClass)}>
                     {children}
                     {
-                        droped ? <ChevronDown className="-mr-1 ml-2 h-5 w-5 text-gray-400" aria-hidden="true" /> : <ChevronDown className="-mr-1 ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+                        droped ? <ChevronUp className="-mr-1 ml-2 h-5 w-5 text-gray-400" aria-hidden="true" /> : <ChevronDown className="-mr-1 ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                     }
                 </button>
             </div>
