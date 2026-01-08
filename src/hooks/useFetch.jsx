@@ -9,6 +9,11 @@ export const useFetch = () => {
     const abortControllerRef = useRef(); // abort controller para cancelar peticiones
     const navigate = useNavigate();
 
+    /**
+     * Funcion para generar un abort y cancelar peticiones en curso
+     * @param {boolean} onlyAbort 
+     * @returns 
+     */
     const generateAbort = (onlyAbort = false) => {
         
         // si existe un abort, abortar la peticion
@@ -32,9 +37,9 @@ export const useFetch = () => {
 
     /**
      * Metodo para ejecutar las peticiones fetch
-     * @param {*} url 
-     * @param {*} method 
-     * @param {*} data 
+     * @param {string} url 
+     * @param {string} method 
+     * @param {object} data 
      * @returns 
      */
     const execute = async (url, method = 'GET', data = {}) => {
