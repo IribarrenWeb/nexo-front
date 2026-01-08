@@ -1,1 +1,38 @@
 @import "tailwindcss";
+
+:root {
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --primary-color: #1e2128;
+  --secondary-color: #2c2f36;
+  --accent-color: #4f46e5;
+}
+
+.nx-primary-bg {
+  background-color: var(--primary-color);
+}
+
+.nx-primary-text {
+  color: var(--text-color);
+}
+
+.nx-accent-bg {
+  background-color: var(--accent-color);
+}
+
+.nx-accent-text {
+  color: var(--text-color);
+}
+
+.nx-secondary-bg {
+  background-color: var(--secondary-color);
+}
+
+.nx-secondary-text {
+  color: var(--text-color);
+}
+
+.nx-background {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
