@@ -36,3 +36,9 @@
   background-color: var(--background-color);
   color: var(--text-color);
 }
+
+/* ui classes */
+
+.nx-btn {
+  @apply cursor-pointer rounded-md bg-indigo-500 px-3 py-1.5 hover:bg-indigo-400 text-sm/6 font-semibold text-white;
+}
