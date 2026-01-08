@@ -1,18 +1,24 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
+import { useNavigate } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL; // contante con la url de la api
 
 export const useFetch = () => {
-    const validMethods = ['POST','PUT','GET','DELETE','PATCH'];
+    const validMethods = ['POST','PUT','GET','DELETE','PATCH']; // metodos valids
     
-    const abortControllerRef = useRef();
+    const abortControllerRef = useRef(); // abort controller para cancelar peticiones
+    const navigate = useNavigate();
 
     const generateAbort = (onlyAbort = false) => {
         
+        // si existe un abort, abortar la peticion
+        // para evitar solapar las peticiones
         if (abortControllerRef.current) {
             abortControllerRef.current.abort();
         }
         
+        // si solo es para abortar, 
+        // limpiamos y cortamos la ejecucion
         if (onlyAbort) {
             abortControllerRef.current = null;
             return;
@@ -23,6 +29,14 @@ export const useFetch = () => {
         return abortControllerRef.current.signal;
     }
 
+
+    /**
+     * Metodo para ejecutar las peticiones fetch
+     * @param {*} url 
+     * @param {*} method 
+     * @param {*} data 
+     * @returns 
+     */
     const execute = async (url, method = 'GET', data = {}) => {
         if (!validMethods.includes(method.toUpperCase())) throw new Error(`Metodo no valido: ${method}`);
 
@@ -57,6 +71,10 @@ export const useFetch = () => {
 
             if (!res.ok) {
                 throw new Error(`Error en la url ${url} : ${res.status} -> ${res.statusText} `);
+            }
+
+            if (res.status === 401) { // si es 401 (no autrizado), redirigir al login
+                navigate('/login');
             }
 
             const responseData = await res.json()
