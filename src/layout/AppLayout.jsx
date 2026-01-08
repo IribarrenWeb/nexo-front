@@ -26,7 +26,7 @@ const AppLayout = () => {
             <div className="flex-1 flex flex-col min-w-0">
                 <HeaderApp />
                 <main className="felx-1 overflow-y-auto p-8">
-                    <div className="border-2 border-gray-700 rounded-lg p-6 bg-[#1e2128] shadow-sm h-full flex items-center justify-center">
+                    <div className="border-2 border-gray-700 rounded-lg p-6 bg-[#1e2128] shadow-sm h-full">
                         <Outlet />
                     </div>
                 </main>
