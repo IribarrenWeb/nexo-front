@@ -17,9 +17,9 @@ const ProfileNav = () => {
     }
     return (
         <div className="flex items-center">
-            <Dropdown actions={[{ label: 'Logout', onClick: () => toLogout() }]}>
-                <UserCircle className="h-8 w-8 text-gray-400" />
-                {user ? user.name : 'ss'}
+            <Dropdown triggerClass="hover:text-gray-400" actions={[{ label: 'Logout', onClick: () => toLogout() }]}>
+                <UserCircle className="h-6 w-6 text-gray-300 mr-2" />
+                {user ? user.name : 'Cargando...'}
             </Dropdown>
         </div>
     );
