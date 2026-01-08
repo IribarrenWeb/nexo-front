@@ -42,3 +42,28 @@
 .nx-btn {
   @apply cursor-pointer rounded-md bg-indigo-500 px-3 py-1.5 hover:bg-indigo-400 text-sm/6 font-semibold text-white;
 }
+
+.nx-card {
+  @apply rounded-lg bg-gray-800 p-6 shadow-md;
+}
+
+.nx-modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+  @apply absolute bottom-0 top-0 left-0 right-0 inset-0 flex items-center justify-center;
+}
+
+.nx-modal {
+  @apply absolute min-w-1/2 bg-gray-50 rounded-lg shadow-lg;
+}
+
+.nx-modal-content {
+  @apply bg-white p-6 rounded-lg shadow-lg;
+}
+
+.nx-modal-title {
+  @apply text-xl font-bold mb-4;
+}
+
+.nx-modal-footer {
+  @apply flex justify-end mt-4;
+}
