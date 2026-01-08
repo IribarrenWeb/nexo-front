@@ -53,15 +53,15 @@
 }
 
 .nx-modal {
-  @apply absolute min-w-1/2 bg-gray-50 rounded-lg shadow-lg;
+  @apply absolute bg-gray-50 rounded-lg shadow-lg;
 }
 
 .nx-modal-content {
-  @apply bg-white p-6 rounded-lg shadow-lg;
+  @apply p-6 rounded-lg shadow-lg;
 }
 
 .nx-modal-title {
-  @apply text-xl font-bold mb-4;
+  @apply text-xl font-bold px-2 py-2;
 }
 
 .nx-modal-footer {
