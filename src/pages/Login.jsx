@@ -55,7 +55,7 @@ const Login = () => {
 
           <LoginForm ref={ref} />
 
-          <Button loading={loading} onClick={toLogin}>
+          <Button className="mt-6" loading={loading} onClick={toLogin}>
             Entrar
           </Button>
 

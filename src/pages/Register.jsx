@@ -33,7 +33,7 @@ const Register = () => {
                     Registro de Usuario
                 </h1>
                 <RegisterForm ref={ref}/>
-                <Button onClick={register}>
+                <Button className="mt-6" onClick={register}>
                     Registrarse
                 </Button>
             </div>
