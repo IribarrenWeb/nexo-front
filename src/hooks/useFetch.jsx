@@ -75,11 +75,12 @@ export const useFetch = () => {
             const res = await fetch(API_URL + url, options);
 
             if (!res.ok) {
-                throw new Error(`Error en la url ${url} : ${res.status} -> ${res.statusText} `);
-            }
-
-            if (res.status === 401) { // si es 401 (no autrizado), redirigir al login
-                navigate('/login');
+                const message = 'Ocurrio algo inesperado';
+                if (res.status === 401) { // si es 401 (no autrizado), redirigir al login
+                    navigate('/login');
+                    message = 'No autorizado. Redirigiendo al login.';
+                }
+                throw new Error(message);
             }
 
             const responseData = await res.json()
