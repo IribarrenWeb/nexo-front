@@ -1,13 +1,17 @@
 import { X } from "lucide-react";
 import React, { useEffect, useImperativeHandle, useState } from "react";
+import ModalContent from "./ModalContent";
+import ModalTitle from "./ModalTitle";
+import ModalFooter from "./ModalFooter";
+import { cn } from "../../../utils/helpers";
 
-const Modal = ({ref, onClosed, children}) => {
+const Modal = ({ref, onClosed, children, className}) => {
     const [isOpen, setIsOpen] = useState(false);
     
     // slot pattern para identificar las diferentes secciones del modal
-    const title = React.Children.toArray(children).find(child => child.type.displayName === 'ModalTitle');
-    const content = React.Children.toArray(children).find(child => child.type.displayName === 'ModalContent');
-    const footer = React.Children.toArray(children).find(child => child.type.displayName === 'ModalFooter');
+    const title = React.Children.toArray(children).find(child => child.type === ModalTitle);
+    const content = React.Children.toArray(children).find(child => child.type === ModalContent);
+    const footer = React.Children.toArray(children).find(child => child.type === ModalFooter);
 
     const trigger = () => {
         setIsOpen(!isOpen);
@@ -29,7 +33,7 @@ const Modal = ({ref, onClosed, children}) => {
             {
                 isOpen ?
                     <div className="nx-modal-backdrop">
-                        <div className="nx-modal">
+                        <div className={cn("nx-modal w-md md:w-lg lg:min-w-1/4", className)}>
                             <div className="flex justify-between items-center nx-modal-header">
                                 {title ? title : <div></div>}
                                 <button className="w-auto px-4 py-4 cursor-pointer bg-transparent text-black" onClick={() => setIsOpen(false)}>
@@ -37,9 +41,9 @@ const Modal = ({ref, onClosed, children}) => {
                                 </button>
                             </div>
                             <div className="nx-modal-content">
-                                {content ? content : null}
+                                {content}
                             </div>
-                            {footer ? footer : null}
+                            {footer}
                         </div>
                     </div>
                 : null
