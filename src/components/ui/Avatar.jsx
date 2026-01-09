@@ -1,7 +1,7 @@
 import { User2 } from "lucide-react";
 import { cn } from "../../utils/helpers";
 
-const Avatar = ({ src = null, size = 'md', alt = '', className }) => {
+const Avatar = ({ src = null, size = 'md', alt = '', className, onClick }) => {
     // definimos las clases por tamaño
     const sizeClasses = {
         sm: 'w-8 h-8',
@@ -21,6 +21,7 @@ const Avatar = ({ src = null, size = 'md', alt = '', className }) => {
         <>
             {src ? ( // si tenemos src mostramos la imagen
                 <img
+                    onClick={onClick}
                     src={src}
                     alt={alt}
                     className={cn(
@@ -31,6 +32,7 @@ const Avatar = ({ src = null, size = 'md', alt = '', className }) => {
                 />
             ) : (
                 <div
+                    onClick={onClick}
                     className={cn( 
                         "rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold",
                         sizeClasses[size],
