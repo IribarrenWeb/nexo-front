@@ -1,8 +1,8 @@
-import { UserCircle } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import Dropdown from "../ui/Dropdown";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Avatar from "../ui/Avatar";
 
 const ProfileNav = () => {
     const { user, logout } = useAuth();
@@ -18,7 +18,7 @@ const ProfileNav = () => {
     return (
         <div className="flex items-center">
             <Dropdown triggerClass="hover:text-gray-400" actions={[{ label: 'Logout', onClick: () => toLogout() }]}>
-                <UserCircle className="h-6 w-6 text-gray-300 mr-2" />
+                <Avatar className="mr-3" size="sm" alt={`${user.name} ${user.lastName}`}></Avatar>
                 {user ? user.name : 'Cargando...'}
             </Dropdown>
         </div>
