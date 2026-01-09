@@ -67,3 +67,15 @@
 .nx-modal-footer {
   @apply flex justify-end mt-4;
 }
+
+/* general classes */
+.nexo-login-bg-container {
+  width: 70%;
+  height: auto;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: #5b8fff29;
+}

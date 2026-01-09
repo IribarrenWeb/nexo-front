@@ -32,9 +32,19 @@ const AuthLayout = () => {
                     }
                 </div>
             </div>
-            <div className={"relative  w-0 flex-1 " + (!isRegister ? "hidden lg:block" : "")}>
+            <div className={"relative  w-0 flex-1 " + (!isRegister ? "hidden lg:block bg-blue-50" : "")}>
                 {
-                    isRegister ? <Outlet /> : ''
+                    isRegister ? <Outlet /> : (
+                        <div className='flex items-center justify-center h-full'>
+                            <div className='nexo-login-bg-container'>
+                                <img
+                                    className='w-3/4 h-auto'
+                                    src="/images/nexo-io-logo1.png"
+                                    alt="nexo"
+                                />
+                            </div>
+                        </div>
+                    )
                 }
             </div>
         </div>
