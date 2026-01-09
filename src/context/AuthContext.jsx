@@ -29,7 +29,8 @@ export const AuthProvider = ({children}) => {
         user,
         setUser,
         logout,
-        isAuth: localStorage.getItem('access_token')?.length ? true : false
+        isAuth: localStorage.getItem('access_token')?.length ? true : false,
+        role: user.rol,
     }), [user])
 
     return (
