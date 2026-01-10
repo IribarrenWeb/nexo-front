@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import RegisterForm from "../components/forms/RegisterForm";
 import { userService } from "../services/user-service";
 import { toast } from "sonner";
@@ -11,17 +11,26 @@ const Register = () => {
     const navigate = useNavigate();
     
     const register = () => {
-        if (!ref.current.validateForm()) return;
-        const data = ref.current.getFormValues();
+        
+        if (!ref.current.validateForm()) return; // validar el formulario antes de enviar
+
+        const data = ref.current.getFormValues(); // obtener los valores del formulario a enviar
+
+        // usamos toast.promise para manejar mensajes y acciones
+        // segun el estado de la promesa
         toast.promise(
-            store(data),
+            store(data), // llamamos al metodo store del userService con los datos del formulario
             {
                 loading: 'Registrando usuario...',
                 success: () => {
                     navigate('/login');
                     return 'Usuario registrado con éxito';
                 },
-                error: 'Error al registrar el usuario'
+                error: (err) => {
+                    const error = JSON.parse(err?.message ?? '{}'); // parseamos el mensaje de error
+                    ref.current.setServerErrors(error.errors); // seteamos los errores en el formulario
+                    return 'Error al registrar el usuario';
+                }
             }
         )
     }

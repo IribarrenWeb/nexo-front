@@ -7,20 +7,22 @@ import Avatar from "../ui/Avatar";
 // definicion de los campos del formulario
 // showConditions: en que modos se muestra el campo
 // rules: reglas de validacion
+// mask: funcion para enmascarar el valor antes de setearlo en el estado
 const formFields = [
     {
         name: 'avatar',
         label: 'Avatar (URL)',
         type: 'text',
         rules: [],
-        showConditions: ['admin','edit']
+        showConditions: ['admin','edit'],
     },
     {
         name: 'username',
         label: 'Username',
         type: 'text',
-        rules: ['required','minLength:4' ],
-        showConditions: ['register', 'admin']
+        rules: ['required','minLength:4','username'],
+        showConditions: ['register', 'admin'],
+        mask: (value) => value.trim().replace(/\s+/g, '').toLowerCase(),
     },
     {
         name: 'email',
@@ -67,13 +69,15 @@ const RegisterForm = ({ref, createMode = 'register'}) => {
         return formFields.filter(field => field.showConditions.includes(createMode))
     }, [createMode]);
 
-    const { formValues, errors, handleChanges, isValid } = useForm({
+    const { formValues, errors, handleChanges, isValid, setAsyncValidations } = useForm({
         ...userModel
     }, validFields, true);
 
+    // exponemos metodos al componente padre
     useImperativeHandle(ref, () => ({
         validateForm: () => isValid(),
         getFormValues: () => ({...formValues}),
+        setServerErrors: (newErrors) => setAsyncValidations(newErrors),
     }))
     
     // funcion para renderizar el elemento segun su tipo
@@ -106,7 +110,7 @@ const RegisterForm = ({ref, createMode = 'register'}) => {
     }
     
     return (
-        <form action="#" method="POST" className="space-y-6">
+        <form action="#" method="POST" className="space-y-6 register-form">
             {
                 validFields.map((data) => (
                     <div key={data.name}>
