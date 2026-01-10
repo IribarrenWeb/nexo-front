@@ -37,10 +37,12 @@ const Register = () => {
 
     return (
         <div className="flex items-center justify-center h-full">
-            <div className="p-8 bg-white rounded-lg shadow-md">
-                <h1 className="text-4xl font-bold text-blue-600 mb-4">
-                    Registro de Usuario
-                </h1>
+            <div className="p-8 bg-white rounded-lg shadow-2xl w-lg">
+                <img
+                    className="w-36 h-auto mx-auto mb-6"
+                    src="/images/nexo-io-logo1.png"
+                    alt="nexo"
+                />
                 <RegisterForm ref={ref}/>
                 <Button className="mt-6" onClick={register}>
                     Registrarse

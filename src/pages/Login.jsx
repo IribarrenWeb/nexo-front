@@ -49,9 +49,11 @@ const Login = () => {
     return (
       <div className="flex items-center justify-center">
         <div className="p-8 bg-white rounded-lg shadow-md w-96">
-          <h1 className="mb-4 text-2xl font-bold text-center text-indigo-500">
-            Login
-          </h1>
+          <img
+            className="w-24 h-auto mx-auto mb-4"
+            src="/images/nexo-logo-icon.png"
+            alt="nexo"
+          />
 
           <LoginForm ref={ref} />
 
