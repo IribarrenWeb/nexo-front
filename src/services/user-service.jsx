@@ -27,8 +27,18 @@ export const userService = () => {
         return data;
     }
 
+    const update = async (userId, formData) => {
+        const { data, error } = await execute(`${BASE_API}${userId}`, 'PUT', formData);
+        if (error) {
+            toast.error(error.message);
+            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
+        }
+        return data;
+    }
+
     return {
         store,
-        index
+        index,
+        update,
     }
 }
