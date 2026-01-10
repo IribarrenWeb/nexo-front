@@ -7,20 +7,15 @@ export const authService = () => {
     const { execute } = useFetch();
     
     const login = async (formData) => {
-        try {
-            const { data, error } = await execute(`${BASE_API}login`, 'POST', formData);
-    
-            if (data?.token) {
-                localStorage.setItem('access_token', data.token)
-                return data.user;
-            }
+        const { data, error } = await execute(`${BASE_API}login`, 'POST', formData);
 
-            toast.error(error.message)
-            
-            return data;
-        } catch (error) {
-            toast.error('Error desconocido')
+        if (data?.token) {
+            localStorage.setItem('access_token', data.token)
+            return data.user;
         }
+        
+        toast.error(error.message)
+        throw new Error(error.message);
     }
 
     const me = async () => {
