@@ -3,7 +3,7 @@ import ProfileNav from "./ProfileNav";
 
 const HeaderApp = () => {
     return (
-        <header className="flex h-16 items-center gap-x-4 border-b border-gray-800 bg-[#111827] px-6 shadow-sm">
+        <header className="flex h-16 items-center gap-x-4 border-b border-gray-800 bg-gray-950 px-6 shadow-sm">
             <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
                 <form className="relative flex flex-1" action="#" method="GET">
                     <Search className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400" />
