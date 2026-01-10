@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-const VALID_RULES = ['required','email','password','match','minLength'];
+const VALID_RULES = ['required','email','password','match','minLength','username'];
 
 const useValidator = (data, rules) => {
 
@@ -44,6 +44,13 @@ const useValidator = (data, rules) => {
         if (rule.minLength) {
             if (value.length < parseInt(rule.minLength)) {
                 return `El campo debe tener al menos ${rule.minLength} caracteres`;
+            }
+        }
+
+        if (rule.username) {
+            const usernameRegex = /^[a-zA-Z0-9_]+$/;
+            if (!usernameRegex.test(value)) {
+                return 'El nombre de usuario solo puede contener letras, números y guiones bajos';
             }
         }
 
@@ -97,7 +104,8 @@ const useValidator = (data, rules) => {
         clearErrorKey,
         clearAllErrors,
         validateData,
-        validateField
+        validateField,
+        setErrors
     }
 }
 
