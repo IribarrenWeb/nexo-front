@@ -44,6 +44,7 @@ export const useFetch = () => {
      */
     const execute = async (url, method = 'GET', data = {}) => {
         if (!validMethods.includes(method.toUpperCase())) throw new Error(`Metodo no valido: ${method}`);
+        const actualPath = window.location.pathname;
 
         const result = {
             data: null,
@@ -73,18 +74,16 @@ export const useFetch = () => {
             }
 
             const res = await fetch(API_URL + url, options);
+            result.data = await res.json();
 
             if (!res.ok) {
-                let message = 'Ocurrio algo inesperado';
-                if (res.status === 401) { // si es 401 (no autrizado), redirigir al login
+                let message = result.data.mensaje ?? 'Ocurrio algo inesperado';
+                if (res.status === 401 && actualPath != '/login') { // si es 401 (no autrizado), redirigir al login
                     navigate('/login');
                     message = 'No autorizado. Redirigiendo al login.';
                 }
                 throw new Error(message);
             }
-
-            const responseData = await res.json()
-            result.data = responseData
         } catch (error) {
             result.error = error instanceof Error ? error : new Error('Error desconocido')
         }
