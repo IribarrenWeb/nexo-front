@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL; // contante con la url de la api
@@ -42,7 +42,7 @@ export const useFetch = () => {
      * @param {object} data 
      * @returns 
      */
-    const execute = async (url, method = 'GET', data = {}) => {
+    const execute = useCallback(async (url, method = 'GET', data = {}) => {
         if (!validMethods.includes(method.toUpperCase())) throw new Error(`Metodo no valido: ${method}`);
         const actualPath = window.location.pathname;
 
@@ -86,9 +86,11 @@ export const useFetch = () => {
             }
         } catch (error) {
             result.error = error instanceof Error ? error : new Error('Error desconocido')
+            
+            if (error.name === 'AbortError') result.error = null; // si es un abort, omitir el error
         }
         return result;
-    }
+    }, [])
 
     useEffect(() => {
         return () => {
