@@ -3,6 +3,9 @@ import { useForm } from "../../hooks/useForm";
 import { userModel } from "../../context/AuthContext";
 import Input from "../ui/Input";
 import Avatar from "../ui/Avatar";
+import { cn } from "../../utils/helpers";
+import Select from "../ui/Select";
+import Toggle from "../ui/Toggle";
 
 // definicion de los campos del formulario
 // showConditions: en que modos se muestra el campo
@@ -11,10 +14,11 @@ import Avatar from "../ui/Avatar";
 const formFields = [
     {
         name: 'avatar',
-        label: 'Avatar (URL)',
+        label: 'Avatar',
         type: 'text',
         rules: [],
         showConditions: ['admin','edit'],
+        disabledConditions: ['admin'],
     },
     {
         name: 'username',
@@ -23,34 +27,52 @@ const formFields = [
         rules: ['required','minLength:4','username'],
         showConditions: ['register', 'admin'],
         mask: (value) => value.trim().replace(/\s+/g, '').toLowerCase(),
+        disabledConditions: ['admin'],
     },
     {
         name: 'email',
         label: 'Email',
         type: 'email',
         rules: ['required','email'],
-        showConditions: ['register', 'admin']
+        showConditions: ['register', 'admin'],
+        disabledConditions: ['admin'],
     },
     {
         name: 'name',
         label: 'Nombre completo',
         type: 'text',
         rules: ['required','minLength:3'],
-        showConditions: ['register', 'admin']
+        showConditions: ['register', 'admin'],
+        disabledConditions: ['admin'],
     },
     {
         name: 'lastName',
         label: 'Apellido',
         type: 'text',
         rules: ['required'],
-        showConditions: ['register', 'admin']
+        showConditions: ['register', 'admin'],
+        disabledConditions: ['admin'],
+    },
+    {
+        name: 'rol',
+        label: 'Rol',
+        type: 'select',
+        rules: ['required'],
+        showConditions: ['admin']
+    },
+    {
+        name: 'deactivated',
+        label: 'Estado',
+        type: 'select',
+        rules: ['required'],
+        showConditions: ['admin']
     },
     {
         name: 'password',
         label: 'Contraseña',
         type: 'password',
         rules: ['required','password'],
-        showConditions: ['register', 'admin']
+        showConditions: ['register']
     },
     {
         name: 'rePassword',
@@ -62,14 +84,14 @@ const formFields = [
 ]
 
 // por defecto el modo es 'register', puede ser 'admin' o 'edit'
-const RegisterForm = ({ref, createMode = 'register'}) => {
+const RegisterForm = ({ref, createMode = 'register', userData, children}) => {
 
     // extraemos los campos validos segun el modo del formulario
     const validFields = useMemo(() => {
         return formFields.filter(field => field.showConditions.includes(createMode))
     }, [createMode]);
 
-    const { formValues, errors, handleChanges, isValid, setAsyncValidations } = useForm({
+    const { formValues, errors, handleChanges, isValid, setAsyncValidations } = useForm(userData ? {...userData, password: null, rePassword: null} : {
         ...userModel
     }, validFields, true);
 
@@ -81,7 +103,7 @@ const RegisterForm = ({ref, createMode = 'register'}) => {
     }))
     
     // funcion para renderizar el elemento segun su tipo
-    const renderElement = ({name, label, type}) => {
+    const renderElement = ({name, label, type, disabledConditions}) => {
         switch(name) {
             case 'avatar':
                 return (
@@ -94,11 +116,35 @@ const RegisterForm = ({ref, createMode = 'register'}) => {
                         />
                     </>
                 );
+            case 'rol':
+                return (
+                    <Select
+                        disabled={disabledConditions?.includes(createMode)}
+                        name={name}
+                        label={name}
+                        value={formValues[name]}
+                        onChange={handleChanges}
+                        options={[
+                            { value: 'user', label: 'Usuario' },
+                            { value: 'admin', label: 'Administrador' },
+                        ]}
+                        errorMessage={errors.find((e) => e.field === name)?.message}
+                    />
+                )
+            case 'deactivated':
+                return (
+                    <Toggle
+                        label={!formValues[name] ? 'Activo' : 'Desactivado'}
+                        enabled={formValues[name]}
+                        setEnabled={(v) => handleChanges({target: {name, value: v}})}
+                    />
+                );
             default:
                 return (
                     <Input
                         name={name}
                         type={type}
+                        disabled={disabledConditions?.includes(createMode)}
                         value={formValues[name]}
                         placeholder={label}
                         onChange={handleChanges}
@@ -110,10 +156,10 @@ const RegisterForm = ({ref, createMode = 'register'}) => {
     }
     
     return (
-        <form action="#" method="POST" className="space-y-6 register-form">
+        <form onSubmit={(e) => e.preventDefault()} action="#" method="POST" className={cn("space-y-6 register-form", {"admin-mode": createMode === 'admin'})}>
             {
                 validFields.map((data) => (
-                    <div key={data.name}>
+                    <div key={data.name} className="input-group">
                         <label
                             className="block text-sm/6 font-medium text-gray-500"
                         >
@@ -126,6 +172,7 @@ const RegisterForm = ({ref, createMode = 'register'}) => {
                     </div>
                 ))
             }
+            {children}
         </form>
     );
 }
