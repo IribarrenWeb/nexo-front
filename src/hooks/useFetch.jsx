@@ -75,7 +75,7 @@ export const useFetch = () => {
             const res = await fetch(API_URL + url, options);
 
             if (!res.ok) {
-                const message = 'Ocurrio algo inesperado';
+                let message = 'Ocurrio algo inesperado';
                 if (res.status === 401) { // si es 401 (no autrizado), redirigir al login
                     navigate('/login');
                     message = 'No autorizado. Redirigiendo al login.';
