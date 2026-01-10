@@ -1,0 +1,48 @@
+/* general classes */
+.nexo-login-bg-container {
+  width: 70%;
+  height: auto;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: #5b8fff29;
+}
+
+.register-form {
+  margin: 0 auto;
+
+  &.admin-mode {
+    min-width: 80vw;
+  }
+}
+
+@media (min-width: 768px) {
+  .register-form {
+    &.admin-mode {
+      min-width: 60vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+
+      :nth-child(1) {
+        grid-column-start: 1;
+        grid-column-end: 3;
+      }
+
+      button {
+        grid-column-start: 1;
+        grid-column-end: 3;
+      }
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+}
+
+
