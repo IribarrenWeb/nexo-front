@@ -19,7 +19,8 @@ const Modal = ({ref, onClosed, children, className}) => {
 
     // exponemos el trigger para que pueda ser usado desde el componente padre
     useImperativeHandle(ref, () => ({
-        trigger
+        trigger,
+        close: () => setIsOpen(false),
     }));
 
     useEffect(() => {
@@ -33,7 +34,7 @@ const Modal = ({ref, onClosed, children, className}) => {
             {
                 isOpen ?
                     <div className="nx-modal-backdrop">
-                        <div className={cn("nx-modal w-md md:w-lg lg:min-w-1/4", className)}>
+                        <div className={cn("nx-modal", className)}>
                             <div className="flex justify-between items-center nx-modal-header">
                                 {title ? title : <div></div>}
                                 <button className="w-auto px-4 py-4 cursor-pointer bg-transparent text-black" onClick={() => setIsOpen(false)}>
