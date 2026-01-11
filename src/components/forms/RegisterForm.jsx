@@ -25,7 +25,7 @@ const formFields = [
         label: 'Username',
         type: 'text',
         rules: ['required','minLength:4','username'],
-        showConditions: ['register', 'admin'],
+        showConditions: ['register', 'admin', 'edit'],
         mask: (value) => value.trim().replace(/\s+/g, '').toLowerCase(),
         disabledConditions: ['admin'],
     },
@@ -34,7 +34,7 @@ const formFields = [
         label: 'Email',
         type: 'email',
         rules: ['required','email'],
-        showConditions: ['register', 'admin'],
+        showConditions: ['register', 'admin', 'edit'],
         disabledConditions: ['admin'],
     },
     {
@@ -42,7 +42,7 @@ const formFields = [
         label: 'Nombre completo',
         type: 'text',
         rules: ['required','minLength:3'],
-        showConditions: ['register', 'admin'],
+        showConditions: ['register', 'admin', 'edit'],
         disabledConditions: ['admin'],
     },
     {
@@ -50,7 +50,7 @@ const formFields = [
         label: 'Apellido',
         type: 'text',
         rules: ['required'],
-        showConditions: ['register', 'admin'],
+        showConditions: ['register', 'admin', 'edit'],
         disabledConditions: ['admin'],
     },
     {
@@ -58,14 +58,14 @@ const formFields = [
         label: 'Rol',
         type: 'select',
         rules: ['required'],
-        showConditions: ['admin']
+        showConditions: ['admin'],
     },
     {
         name: 'deactivated',
         label: 'Estado',
         type: 'select',
         rules: ['required'],
-        showConditions: ['admin']
+        showConditions: ['admin'],
     },
     {
         name: 'password',
@@ -156,7 +156,7 @@ const RegisterForm = ({ref, createMode = 'register', userData, children}) => {
     }
     
     return (
-        <form onSubmit={(e) => e.preventDefault()} action="#" method="POST" className={cn("space-y-6 register-form", {"admin-mode": createMode === 'admin'})}>
+        <form onSubmit={(e) => e.preventDefault()} action="#" method="POST" className={cn("space-y-6 register-form", {"profile-mode": ['edit','admin'].includes(createMode)})}>
             {
                 validFields.map((data) => (
                     <div key={data.name} className="input-group">
