@@ -39,6 +39,17 @@
   font-size: 1rem;
 }
 
+.nx-posts {
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 0.5rem;
+  background-color: #030712;
+  padding: 1rem;
+  &:hover {
+    box-shadow: 0 0 10px var(--accent-color);
+  }
+}
+
 @media (min-width: 768px) {
   .register-form {
     &.profile-mode {

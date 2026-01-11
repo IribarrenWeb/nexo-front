@@ -1,11 +1,9 @@
-@import "tailwindcss";
-
 :root {
   --background-color: #1A4199;
   --text-color: #EFF6FF;
   --primary-color: #1e2128;
   --secondary-color: #2c2f36;
-  --accent-color: #2853c3;
+  --accent-color: #2B7FFF;
 }
 
 .nx-primary-bg {
@@ -69,3 +67,5 @@
 }
 
 @import "./app.scss";
+
+@import "tailwindcss";
