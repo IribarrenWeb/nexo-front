@@ -32,7 +32,7 @@ const AppLayout = () => {
                             <Outlet />
                         </div>
                     </main>
-                    <aside className="hidden lg:block w-full sticky top-0 h-screen p-4">
+                    <aside className="hidden lg:block w-full sticky top-0 h-screen p-4 border-l-2 border-gray-800">
                         <div className="bg-gray-950 rounded-xl p-4 h-full">
                             <h2 className="font-bold text-gray-200 mb-4">Nexos virales</h2>
                         </div>
