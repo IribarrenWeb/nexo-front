@@ -27,7 +27,7 @@ const AppLayout = () => {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <HeaderApp />
                 <div className="grid grid-cols-1 lg:grid-cols-4">
-                    <main className="felx-1 overflow-y-auto p-8 col-span-3 h-screen">
+                    <main id="nx-app-main" className="felx-1 overflow-y-auto p-8 col-span-3">
                         <div className={cn(baseMainClasses)}>
                             <Outlet />
                         </div>
