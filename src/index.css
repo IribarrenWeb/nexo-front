@@ -47,7 +47,7 @@
 
 .nx-modal-backdrop {
   background-color: rgba(0, 0, 0, 0.4);
-  @apply absolute bottom-0 top-0 left-0 right-0 inset-0 flex items-center justify-center;
+  @apply fixed z-10 bottom-0 top-0 left-0 right-0 inset-0 flex items-center justify-center;
 }
 
 .nx-modal {
