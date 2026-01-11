@@ -1,14 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { toast } from "sonner";
 import Post from "./Post";
 import InfiniteScroll from "./ui/InfiniteScroll";
 import { postService } from "../services/post-service";
 
-const PostList = ({userId}) => {
+const PostList = ({ref, userId}) => {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const infiniteRef = useRef();
     const { index } = postService();
+
+    useImperativeHandle(ref, () => ({
+        reset: resetPosts,
+        pushNewPost: (newPost) => {
+            setPosts(prevPosts => [newPost, ...prevPosts]);
+        }
+    }));
 
     const loadPosts = async () => {
         try {
@@ -17,8 +24,8 @@ const PostList = ({userId}) => {
             if (userId) {
                 params.userId = userId;
             }
-            const posts = await index(params);
             
+            const posts = await index(params);
             if (!Array.isArray(posts)) return;
 
             setPosts(prevPosts => [...prevPosts, ...posts]);
@@ -53,7 +60,7 @@ const PostList = ({userId}) => {
 
     return (
         <div className="space-y-4">
-            <InfiniteScroll maxH="80vh" offsetH={200} loadMore={loadPosts} ref={infiniteRef}>
+            <InfiniteScroll scrollTarget="#nx-app-main" offsetH={200} loadMore={loadPosts} ref={infiniteRef}>
                 {posts.map(post => (
                     <Post className="nx-posts" key={post._id} postData={post} />
                 ))}

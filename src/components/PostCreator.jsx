@@ -36,9 +36,9 @@ const PostCreator = ({onPosted}) => {
 
         try {
             setLoading(true);
-            await store(formValues);
+            const newPost = await store(formValues);
             toast.success('Post creado con éxito');
-            if (onPosted) onPosted(); // notificamos al padre que se ha creado un post
+            if (onPosted) onPosted(newPost); // notificamos al padre que se ha creado un post
 
             resetForm(); // reseteamos el formulario
         } catch (error) {
