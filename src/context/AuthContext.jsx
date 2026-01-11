@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react"
 
-export const userModel = {
+export const USER_MODEL = {
     name: '',
     lastName: '',
     username: '',
@@ -18,15 +18,17 @@ export const userModel = {
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState({...userModel})
-    
+    const [user, setUser] = useState({...USER_MODEL})
+    const fullName = useMemo(() => `${user.name} ${user.lastName}`, [user])
+
     const logout = () => {
-        setUser({...userModel})
+        setUser({...USER_MODEL})
         localStorage.removeItem('access_token')
     }
 
     const toProvide = useMemo(() => ({
         user,
+        fullName,
         setUser,
         logout,
         isAuth: localStorage.getItem('access_token')?.length ? true : false,
