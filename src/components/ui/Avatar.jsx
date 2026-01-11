@@ -8,6 +8,17 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, onClick }) => {
         md: 'w-12 h-12',
         lg: 'w-16 h-16',
         xl: 'w-24 h-24',
+        xxl: 'w-32 h-32',
+        xxxl: 'w-32 h-32 lg:w-40 lg:h-40 xl:w-48 xl:h-48',
+    };
+
+    const textClasses = {
+        sm: 'text-sm',
+        md: 'text-md',
+        lg: 'text-lg',
+        xl: 'text-xl',
+        xxl: 'text-4xl',
+        xxxl: 'text-6xl',
     };
 
     // extraer las iniciales del alt
@@ -25,7 +36,7 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, onClick }) => {
                     src={src}
                     alt={alt}
                     className={cn(
-                        "rounded-full object-cover",
+                        "rounded-full object-cover w-4 xl",
                         sizeClasses[size],
                         className
                     )}
@@ -36,7 +47,8 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, onClick }) => {
                     className={cn( 
                         "rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold",
                         sizeClasses[size],
-                        className
+                        className,
+                        textClasses[size]
                     )}
                 > 
                 {/* si tenemos iniciales, mostramos iniciales y si no, mostramos icono */}
