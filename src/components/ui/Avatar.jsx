@@ -9,7 +9,7 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, onClick }) => {
         lg: 'w-16 h-16',
         xl: 'w-24 h-24',
         xxl: 'w-32 h-32',
-        xxxl: 'w-32 h-32 lg:w-40 lg:h-40 xl:w-48 xl:h-48',
+        xxxl: 'w-30 h-30 lg:w-36 lg:h-36 xl:w-40 xl:h-40',
     };
 
     const textClasses = {
@@ -18,7 +18,7 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, onClick }) => {
         lg: 'text-lg',
         xl: 'text-xl',
         xxl: 'text-4xl',
-        xxxl: 'text-6xl',
+        xxxl: 'text-4xl lg:text-6xl',
     };
 
     // extraer las iniciales del alt
