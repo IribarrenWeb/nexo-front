@@ -41,12 +41,17 @@
 
 .nx-posts {
   margin-bottom: 1.5rem;
-  border: 1px solid var(--accent-color);
-  border-radius: 0.5rem;
-  background-color: #030712;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border: 1px solid var(--primary-color);
+  border-bottom: 1px solid var(--secondary-color);
+  box-sizing: content-box;
+  background-color: var(--primary-color);
   padding: 1rem;
+  transition: background-color 0.3s, border 0.3s;
   &:hover {
-    box-shadow: 0 0 10px var(--accent-color);
+    background-color: var(--secondary-color);
+    border: 1px solid var(--accent-color);
   }
 }
 
