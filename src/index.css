@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "./app.scss";
 
 :root {
   --background-color: #1A4199;
@@ -68,3 +67,5 @@
 .nx-modal-footer {
   @apply flex justify-end mt-4;
 }
+
+@import "./app.scss";

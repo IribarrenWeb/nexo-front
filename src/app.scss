@@ -18,6 +18,16 @@
   }
 }
 
+.nx-btn-lg {
+  padding: 75rem 2rem;
+  font-size: 1.25rem;
+}
+
+.nx-btn-md {
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+}
+
 @media (min-width: 768px) {
   .register-form {
     &.profile-mode {
