@@ -34,7 +34,7 @@ const Modal = ({ref, onClosed, children, className}) => {
             {
                 isOpen ?
                     <div className="nx-modal-backdrop">
-                        <div className={cn("nx-modal", className)}>
+                        <div className={cn("nx-modal bg-gray-100", className)}>
                             <div className="flex justify-between items-center nx-modal-header">
                                 {title ? title : <div></div>}
                                 <button className="w-auto px-4 py-4 cursor-pointer bg-transparent text-black" onClick={() => setIsOpen(false)}>
