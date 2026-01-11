@@ -23,6 +23,9 @@ function App() {
 			<Route element={<RoleGuard role="admin"/>}>
 				<Route path='/users' element={<Users />} />
 			</Route>
+
+			{/* ponemos esta ruta al final para capturar los perfiles de usuario sin pisar las otras rutas */}
+			<Route path='/:username' element={<Profile />} /> 
 		</Route>
 	  </Route>
 
