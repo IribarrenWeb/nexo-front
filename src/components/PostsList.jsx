@@ -1,6 +1,6 @@
 import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { toast } from "sonner";
-import Post from "./Post";
+import PostElement from "./PostElement";
 import InfiniteScroll from "./ui/InfiniteScroll";
 import { postService } from "../services/post-service";
 
@@ -24,7 +24,7 @@ const PostList = ({ref, userId}) => {
             if (userId) {
                 params.userId = userId;
             }
-            
+
             const posts = await index(params);
             if (!Array.isArray(posts)) return;
 
@@ -62,7 +62,7 @@ const PostList = ({ref, userId}) => {
         <div className="space-y-4">
             <InfiniteScroll scrollTarget="#nx-app-main" offsetH={200} loadMore={loadPosts} ref={infiniteRef}>
                 {posts.map(post => (
-                    <Post className="nx-posts" key={post._id} postData={post} />
+                    <PostElement className="nx-posts" key={post._id} postData={post} />
                 ))}
             </InfiniteScroll>
         </div>

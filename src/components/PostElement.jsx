@@ -7,7 +7,7 @@ import { postService } from "../services/post-service";
 import { useMemo, useRef, useState } from "react";
 import ModalPostComment from "./modals/ModalPostComment";
 
-const Post = ({postData, className, editable = true}) => {
+const PostElement = ({postData, className, editable = true}) => {
     const { user } = useAuth();
     const { liked } = postService();
     const [modelPost, setModelPost] = useState({...postData});
@@ -103,4 +103,4 @@ const Post = ({postData, className, editable = true}) => {
     );
 }
 
-export default Post;
+export default PostElement;
