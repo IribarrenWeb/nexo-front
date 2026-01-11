@@ -60,7 +60,7 @@ const InfiniteScroll = ({ ref, children, maxH, offsetH, loadMore, scrollTarget, 
     }, [scrollTarget, loadMore]); // escuchamos cambios en el elemento target
 
     return (
-        <div className={className} style={{maxHeight: maxH, overflowY: 'auto'}}>
+        <div className={className} style={{maxHeight: maxH}}>
             {children}
             <div className={cn("w-full justify-center my-4", (!loading ? 'hidden' : 'flex'))}>
                 <Loader2 className="animate-spin h-6 w-6 text-blue-500" />
