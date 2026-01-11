@@ -4,7 +4,7 @@ import PostElement from "./PostElement";
 import InfiniteScroll from "./ui/InfiniteScroll";
 import { postService } from "../services/post-service";
 
-const PostList = ({ref, userId}) => {
+const PostList = ({ref, userId, onSelect}) => {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const infiniteRef = useRef();
@@ -59,13 +59,13 @@ const PostList = ({ref, userId}) => {
     }
 
     return (
-        <div className="space-y-4">
+        <>
             <InfiniteScroll scrollTarget="#nx-app-main" offsetH={200} loadMore={loadPosts} ref={infiniteRef}>
                 {posts.map(post => (
-                    <PostElement className="nx-posts" key={post._id} postData={post} />
+                    <PostElement onClick={() => onSelect(post)} className="nx-posts" key={post._id} postData={post} />
                 ))}
             </InfiniteScroll>
-        </div>
+        </>
     )
 }
 
