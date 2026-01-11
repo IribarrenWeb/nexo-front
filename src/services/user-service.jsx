@@ -54,11 +54,21 @@ export const userService = () => {
         return data;
     }
 
+    const toFollow = async (userId) => {
+        const { data, error } = await execute(`${BASE_API}follow/${userId}`, 'PUT', {});
+        if (error) {
+            toast.error(error.message);
+            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
+        }
+        return data;
+    }
+
     return {
         store,
         index,
         update,
         show,
+        toFollow,
         showByUsername
     }
 }
