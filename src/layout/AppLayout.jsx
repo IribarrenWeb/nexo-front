@@ -18,7 +18,7 @@ const AppLayout = () => {
         });
     }, []);
 
-    const baseMainClasses = "border-2 border-gray-950 rounded-lg bg-gray-800 shadow-sm h-full";
+    const baseMainClasses = "relative border-2 border-gray-950 rounded-lg bg-gray-800 shadow-sm h-full";
     return (
         <div className="flex h-screen bg-gray-950 text-white overflow-hidden">
 
