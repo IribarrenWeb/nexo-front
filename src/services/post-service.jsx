@@ -5,7 +5,7 @@ const BASE_API = 'posts/'
 export const postService = () => {
     const { execute } = useFetch();
     
-    // metodo store para crear un nuevo usuario
+    // metodo store para crear un nuevo post
     const store = async (formData) => {
         const { data, error } = await execute(`${BASE_API}`, 'POST', formData);
 
@@ -17,7 +17,7 @@ export const postService = () => {
         return data;
     }
 
-    // metodo index para listar usuarios
+    // metodo index para listar posts
     const index = async (params = {}) => {
         const { data, error } = await execute(`${BASE_API}`, 'GET', params);
         if (error) {
