@@ -10,6 +10,7 @@ import Profile from './pages/Profile.jsx';
 import { AuthenticateGuard } from './components/guards/AuthenticateGuard.jsx';
 import Users from './pages/Users.jsx';
 import { RoleGuard } from './components/guards/RoleGuard.jsx';
+import Post from './pages/Post.jsx';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
 			<Route element={<RoleGuard role="admin"/>}>
 				<Route path='/users' element={<Users />} />
 			</Route>
+
+			<Route path='/post/:id' element={<Post />} />
 
 			{/* ponemos esta ruta al final para capturar los perfiles de usuario sin pisar las otras rutas */}
 			<Route path='/:username' element={<Profile />} /> 
