@@ -1,6 +1,6 @@
 import { useImperativeHandle, useMemo } from "react";
 import { useForm } from "../../hooks/useForm";
-import { userModel } from "../../context/AuthContext";
+import { USER_MODEL } from "../../context/AuthContext";
 import Input from "../ui/Input";
 import Avatar from "../ui/Avatar";
 import { cn } from "../../utils/helpers";
@@ -11,7 +11,7 @@ import Toggle from "../ui/Toggle";
 // showConditions: en que modos se muestra el campo
 // rules: reglas de validacion
 // mask: funcion para enmascarar el valor antes de setearlo en el estado
-const formFields = [
+const USER_FORM_DEFINITIONS = [
     {
         name: 'avatar',
         label: 'Avatar',
@@ -88,11 +88,11 @@ const RegisterForm = ({ref, createMode = 'register', userData, children}) => {
 
     // extraemos los campos validos segun el modo del formulario
     const validFields = useMemo(() => {
-        return formFields.filter(field => field.showConditions.includes(createMode))
+        return USER_FORM_DEFINITIONS.filter(field => field.showConditions.includes(createMode))
     }, [createMode]);
 
     const { formValues, errors, handleChanges, isValid, setAsyncValidations } = useForm(userData ? {...userData, password: null, rePassword: null} : {
-        ...userModel
+        ...USER_MODEL
     }, validFields, true);
 
     // exponemos metodos al componente padre
