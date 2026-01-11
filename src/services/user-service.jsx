@@ -36,9 +36,29 @@ export const userService = () => {
         return data;
     }
 
+    const show = async (userId) => {
+        const { data, error } = await execute(`${BASE_API}${userId}`, 'GET');
+        if (error) {
+            toast.error(error.message);
+            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
+        }
+        return data;
+    }
+
+    const showByUsername = async (username) => {
+        const { data, error } = await execute(`${BASE_API}by-username/${username}`, 'GET');
+        if (error) {
+            toast.error(error.message);
+            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
+        }
+        return data;
+    }
+
     return {
         store,
         index,
         update,
+        show,
+        showByUsername
     }
 }
