@@ -6,6 +6,7 @@ import Button from "./ui/Button";
 import Textarea from "./ui/Textarea";
 import { useState } from "react";
 import { postService } from "../services/post-service";
+import { cn } from "../utils/helpers";
 
 // modelo de datos para crear un post
 const POST_MODEL = {
@@ -66,7 +67,7 @@ const PostCreator = ({onPosted}) => {
                         placeholder="Comparte tus nexos..."
                         errorMessage={errors.find(e => e.field === 'content')?.message}
                     />
-                    <div className="flex justify-end">
+                    <div className={cn("flex justify-end", {'hidden': formValues?.content?.length === 0})}>
                         <Button outline onClick={toPost} loading={loading} className="w-auto" size="md">Públicar</Button>
                     </div>
                 </div>
