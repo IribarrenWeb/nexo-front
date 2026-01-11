@@ -5,6 +5,7 @@ import HeaderApp from "../components/general/HeaderApp.jsx";
 import { authService } from "../services/auth-service.jsx";
 import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
+import { cn } from "../utils/helpers.jsx";
 
 const AppLayout = () => {
     const { me } = authService();
@@ -13,11 +14,11 @@ const AppLayout = () => {
     useEffect(() => {
         me().then((user) => {
             if (!user) return;
-            console.log('USER', user);
             setUser(user);
         });
     }, []);
 
+    const baseMainClasses = "border-2 border-gray-950 rounded-lg bg-gray-800 shadow-sm h-full";
     return (
         <div className="flex h-screen bg-gray-950 text-white overflow-hidden">
 
@@ -26,7 +27,7 @@ const AppLayout = () => {
             <div className="flex-1 flex flex-col min-w-0">
                 <HeaderApp />
                 <main className="felx-1 overflow-y-auto p-8">
-                    <div className="border-2 border-gray-950 rounded-lg p-6 bg-gray-800 shadow-sm h-full">
+                    <div className={cn(baseMainClasses)}>
                         <Outlet />
                     </div>
                 </main>

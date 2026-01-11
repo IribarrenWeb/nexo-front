@@ -13,14 +13,14 @@
 .register-form {
   margin: 0 auto;
 
-  &.admin-mode {
+  &.profile-mode {
     min-width: 80vw;
   }
 }
 
 @media (min-width: 768px) {
   .register-form {
-    &.admin-mode {
+    &.profile-mode {
       min-width: 60vw;
       display: grid;
       grid-template-columns: 1fr 1fr;
