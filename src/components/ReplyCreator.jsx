@@ -22,7 +22,7 @@ const COMMENT_FORM_DEFINITION = [
     },
 ]
 
-const ReplyCreator = ({postId, onReplied}) => {
+const ReplyCreator = ({postId, onReplied, className}) => {
     const { fullName } = useAuth();
     const { formValues, errors, handleChanges, resetForm, isValid, setAsyncValidations } = useForm({
       ...COMMENT_MODEL, post: postId,
@@ -37,9 +37,9 @@ const ReplyCreator = ({postId, onReplied}) => {
 
         try {
             setLoading(true);
-            const newPost = await store(formValues);
+            const newComment = await store(formValues);
             toast.success('Comentario creado con éxito');
-            if (onReplied) onReplied(newPost); // notificamos al padre que se ha respondido
+            if (onReplied) onReplied(newComment); // notificamos al padre que se ha respondido
 
             resetForm(); // reseteamos el formulario
         } catch (error) {
@@ -54,7 +54,7 @@ const ReplyCreator = ({postId, onReplied}) => {
 
     return (
         <>
-            <div className="flex px-4">
+            <div className={cn("flex px-4", className)}>
                 <div className="">
                     <Avatar size="md" alt={fullName} />
                 </div>
