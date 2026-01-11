@@ -59,6 +59,25 @@
     background-color: var(--secondary-color);
     border: 1px solid var(--accent-color);
   }
+  &.reply {
+    border-radius: 0 !important;
+    border: none !important;
+    &:hover {
+      background-color: var(--primary-color);
+    }
+
+    .nx-post-avatar {
+      &::after {
+        content: '';
+        position: absolute;
+        top: 4.5rem;
+        left: 2.5rem;
+        width: 2px;
+        height: 20%;
+        background-color: var(--accent-color);
+      }
+    }
+  }
 }
 
 @media (min-width: 768px) {
@@ -85,6 +104,12 @@
       flex-direction: column;
       gap: 0.5rem;
     }
+  }
+}
+
+@media (max-width: 650px) {
+  .nx-modal-content {
+    padding: 1rem !important;
   }
 }
 
