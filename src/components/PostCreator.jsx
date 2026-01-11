@@ -67,7 +67,7 @@ const PostCreator = ({onPosted}) => {
                         errorMessage={errors.find(e => e.field === 'content')?.message}
                     />
                     <div className="flex justify-end">
-                        <Button onClick={toPost} loading={loading} className="w-auto" size="md">Públicar</Button>
+                        <Button outline onClick={toPost} loading={loading} className="w-auto" size="md">Públicar</Button>
                     </div>
                 </div>
             </div>
