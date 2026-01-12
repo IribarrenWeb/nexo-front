@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon, User, Users } from "lucide-react";
+import { LayoutDashboardIcon, MessageCircle, User, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { cn } from "../../utils/helpers";
@@ -7,6 +7,7 @@ const menus = [
   { name: "Feed", href: "/", icon: LayoutDashboardIcon },
   { name: "Perfil", href: "/profile", icon: User },
   { name: "Usuarios", href: "/users", icon: Users, role: "admin" },
+  { name: "Mensajes", href: "/messages", icon: MessageCircle },
 ];
 
 const Sidebar = () => {

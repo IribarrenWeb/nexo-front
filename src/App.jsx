@@ -11,6 +11,7 @@ import { AuthenticateGuard } from './components/guards/AuthenticateGuard.jsx';
 import Users from './pages/Users.jsx';
 import { RoleGuard } from './components/guards/RoleGuard.jsx';
 import Post from './pages/Post.jsx';
+import Messages from './pages/Messages.jsx';
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
 			</Route>
 
 			<Route path='/post/:id' element={<Post />} />
+			
+			<Route path='/messages/:from?' element={<Messages />} />
 
 			{/* ponemos esta ruta al final para capturar los perfiles de usuario sin pisar las otras rutas */}
 			<Route path='/:username' element={<Profile />} /> 
