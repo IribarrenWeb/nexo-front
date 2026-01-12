@@ -1,12 +1,12 @@
 import { cn } from "../../utils/helpers";
 
-const Textarea = ({ label, value, onChange, name, placeholder, className, errorMessage }) => {
+const Textarea = ({ label, value, onChange, name, placeholder, className, errorMessage, containerClass }) => {
     const baseClasses = "w-full resize-none p-3 rounded-lg bg-transparent text-white border-1 border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500";
     const errorClasses = errorMessage ? "border-red-500 focus:ring-red-500" : "";
     const finalClasses = cn(baseClasses, errorClasses, className);
 
     return (
-        <div className="mb-4">
+        <div className={cn("mb-4", containerClass)}>
             {label && <label className="block text-white font-semibold mb-2">{label}</label>}
             <textarea
                 className={finalClasses}

@@ -35,6 +35,11 @@
   }
 }
 
+.nx-btn-disabled {
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+}
+
 .nx-btn-lg {
   padding: 75rem 2rem;
   font-size: 1.25rem;
@@ -44,6 +49,13 @@
   padding: 0.5rem 1.5rem;
   font-size: 1rem;
 }
+
+#nx-chat-messages {
+  background-image: url('/images/chat-back.png');
+  background-size: contain;
+  background-position: center;
+}
+  
 
 .nx-posts, .nx-comments {
   margin-bottom: 1.5rem;
