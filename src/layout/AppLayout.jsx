@@ -27,12 +27,12 @@ const AppLayout = () => {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <HeaderApp />
                 <div className="grid grid-cols-1 lg:grid-cols-4">
-                    <main id="nx-app-main" className="felx-1 overflow-y-auto p-8 col-span-3">
+                    <main id="nx-app-main" className="felx-1 overflow-y-auto col-span-3">
                         <div className={cn(baseMainClasses)}>
                             <Outlet />
                         </div>
                     </main>
-                    <aside className="hidden lg:block w-full sticky top-0 h-screen p-4 border-l-2 border-gray-800">
+                    <aside className="hidden lg:block w-full sticky top-0 h-screen py-4 px-2 border-l-2 border-gray-800">
                         <div className="bg-gray-950 rounded-xl p-4 h-full">
                             <h2 className="font-bold text-gray-200 mb-4">Nexos virales</h2>
                         </div>

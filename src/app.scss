@@ -123,6 +123,42 @@
   .nx-modal-content {
     padding: 1rem !important;
   }
+  #nx-header {
+    #nx-header-logo {
+      display: block;
+    }
+  }
+  #nx-sidebar {
+    position: fixed;
+    width: 100vw;
+    height: 60px;
+    bottom: 0;
+    z-index: 1000;
+    padding: 0 1rem;
+    background-color: var(--primary-color);
+    border-top: 2px solid var(--secondary-color);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+
+    #nx-sidebar-logo {
+      display: none;
+    }
+    #nx-sidebar-nav {
+      justify-content: space-around;
+      align-items: center;
+      height: 100%;
+      padding: 0;
+      overflow: hidden;
+      ul {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        gap: 1rem;
+        li {
+          flex: 1;
+        }
+      }
+    }
+  }
 }
 
 

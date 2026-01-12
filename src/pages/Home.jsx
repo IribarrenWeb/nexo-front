@@ -16,7 +16,7 @@ const Home = () => {
   }
 
   return (
-    <>
+    <div className="py-5">
       <div className="bg-gray-950">
         <PostCreator onPosted={pushNewPostToList} />
       </div>
@@ -24,7 +24,7 @@ const Home = () => {
       <div className="pt-7 border-t-2 border-gray-800 mt-10">
         <PostList ref={listRef} onSelect={onSelect} />
       </div>
-    </>
+    </div>
   );
 };
 
