@@ -2,11 +2,22 @@ import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { cn } from "../../utils/helpers";
 import { Loader2 } from "lucide-react";
 
-const InfiniteScroll = ({ ref, children, maxH, offsetH, loadMore, scrollTarget, className }) => {
+const InfiniteScroll = ({ ref, children, maxH, offsetH, loadMore, scrollTarget, className, reverse = false }) => {
     const [stop, setStop] = useState(false); // para detener la carga de mas elementos
     const [loading, setLoading] = useState(false); // para indicar que se estan cargando mas elementos
 
     const stateRef = useRef({ stop, loading });
+
+    const scrollTo = (direction) => {
+        const elementTarget = document.querySelector(scrollTarget);
+        if (elementTarget) {
+            if (direction === 'top') {
+                elementTarget.scrollTop = 0;
+            } else if (direction === 'bottom') {
+                elementTarget.scrollTop = elementTarget.scrollHeight;
+            }
+        }
+    }
 
     // exponemos los metodos al componente padre
     useImperativeHandle(ref, () => ({
@@ -14,7 +25,9 @@ const InfiniteScroll = ({ ref, children, maxH, offsetH, loadMore, scrollTarget, 
         stop: () => setStop(true),
         resume: () => setStop(false),
         loading: () => setLoading(true),
-        loaded: () => setLoading(false),    
+        loaded: () => setLoading(false), 
+        scrollToTop: () => scrollTo('top'),
+        scrollToBottom: () => scrollTo('bottom'),   
     }))
 
     // manejador del evento scroll para cargar mas elementos
@@ -23,9 +36,7 @@ const InfiniteScroll = ({ ref, children, maxH, offsetH, loadMore, scrollTarget, 
         
         if (stateRef.current.stop || stateRef.current.loading) return;
         
-        const valid = scrollHeight - scrollTop - clientHeight;
-        if (scrollHeight - scrollTop - clientHeight <= offsetH) {
-            console.log('scroller',{scrollTop, scrollHeight, clientHeight, stop, loading, valid});
+        if ((reverse && scrollTop <= offsetH) || (scrollHeight - scrollTop - clientHeight <= offsetH)) {
             loadMore();
         }
     }
@@ -36,6 +47,11 @@ const InfiniteScroll = ({ ref, children, maxH, offsetH, loadMore, scrollTarget, 
         const elementTarget = document.querySelector(scrollTarget);
         if (elementTarget) { // si encontramos el elemento, le asignamos el evento scroll
             elementTarget.addEventListener("scroll", handleScroll);
+            
+            if (reverse) {
+                // si es reverse, hacemos scroll al final del elemento
+                elementTarget.scrollTop = elementTarget.scrollHeight;
+            }
         }
         return elementTarget;
     }
@@ -45,7 +61,6 @@ const InfiniteScroll = ({ ref, children, maxH, offsetH, loadMore, scrollTarget, 
     }, [stop, loading]);
 
     useEffect(() => {
-        console.log('InfiniteScroll: asignando target', scrollTarget, stop, loading);
         let targetElement = null;
 
         // llamamos a la funcion para asignar el evento scroll al elemento target
@@ -61,13 +76,14 @@ const InfiniteScroll = ({ ref, children, maxH, offsetH, loadMore, scrollTarget, 
 
     return (
         <div className={className} style={{maxHeight: maxH}}>
-            {children}
+            { !reverse && children}
             <div className={cn("w-full justify-center my-4", (!loading ? 'hidden' : 'flex'))}>
                 <Loader2 className="animate-spin h-6 w-6 text-blue-500" />
             </div>
             <div className={cn("w-full justify-center my-4", (!stop ? 'hidden' : 'flex'))}>
                 <span className="text-gray-500">No hay más elementos para cargar.</span>
             </div>
+            { reverse && children}
         </div>
     )
 }
