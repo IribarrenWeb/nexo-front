@@ -1,4 +1,4 @@
-import { Calendar1 } from "lucide-react";
+import { Calendar1, Send } from "lucide-react";
 import Avatar from "../components/ui/Avatar";
 import Button from "../components/ui/Button";
 import { useAuth } from "../context/AuthContext";
@@ -113,9 +113,14 @@ const Profile = () => {
 								isAuthUser ? (
 									<Button className="w-auto" onClick={() => modalRef.current.trigger()}>Editar perfil</Button>
 								) : (
-									<Button loading={loadingFollow} outline={isAuthUserFollow} className="w-auto" onClick={triggerFollow}>
-										{isAuthUserFollow ? 'Dejar de seguir' : 'Seguir'}
-									</Button>
+									<>
+										<Button loading={loadingFollow} outline={isAuthUserFollow} className="w-auto" onClick={triggerFollow}>
+											{isAuthUserFollow ? 'Dejar de seguir' : 'Seguir'}
+										</Button>
+										<Button outline={true} className="w-auto ml-4" to={`/messages/${profileUser.username}`}>
+											<Send className="inline-block" />
+										</Button>
+									</>
 								)
 							}
 						</div>
