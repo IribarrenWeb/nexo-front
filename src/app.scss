@@ -93,6 +93,11 @@
 }
 
 @media (min-width: 768px) {
+  #nx-chat {
+    #nx-chat-info {
+      display: none;
+    }
+  }
   .register-form {
     &.profile-mode {
       min-width: 60vw;
@@ -115,6 +120,19 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  #nx-chats {
+    &.selected-chat {
+      display: none;
+    }
+  }
+  #nx-chat-container {
+    &.selected-chat {
+      grid-column: span 5 / span 5;
     }
   }
 }
