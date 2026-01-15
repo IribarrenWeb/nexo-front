@@ -33,6 +33,10 @@ const Messages = () => {
         }
     }
 
+    const onSelectChat = (user) => {
+        setFromUser(user);
+    }
+
     useEffect(() => {
         loadFromUser();
     }, [from, user]);
@@ -46,20 +50,27 @@ const Messages = () => {
     }
     
     return (
-        <>
-            {!from && (
-                <div className="p-4">
-                    <h1 className="text-2xl font-bold mb-4">Mensajes</h1>
-                    
-                        <p>Selecciona un chat para ver los mensajes</p>
+        <div className={cn("grid grid-cols-5 h-[calc(100vh-64px)]")}>
+            <div id="nx-chats" className={cn("col-span-2 border-r border-gray-800", {"selected-chat": fromUser})}>
+                <div className="px-4 py-2">
+                    <h1 className="text-2xl font-bold">Chats</h1>
                 </div>
-            )}
-            <div className={cn({"border-t-2 border-gray-800 mt-4": !from, '-mx-10 -mt-10': from})}>
+                <div id="nx-chats-list" className={cn("border-t-2 border-gray-800")}>
+                    <ChatsList selected={fromUser} onSelect={onSelectChat} />
+                </div>
+            </div>
+            <div id="nx-chat-container" className={cn("col-span-3", {"selected-chat": fromUser})}>
                 {
-                    !from ? <ChatsList /> : <ChatDetail fromData={fromUser} />
+                    fromUser ?
+                    <ChatDetail fromData={fromUser} unsetChat={() => setFromUser(null)} />
+                    : (
+                        <div className="flex items-center justify-center h-full">
+                            <span className="text-lg font-bold text-gray-500">Selecciona un chat para ver los mensajes</span>
+                        </div>
+                    )
                 }
             </div>
-        </>
+        </div>
     );
 }
 

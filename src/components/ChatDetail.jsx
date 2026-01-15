@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Textarea from "./ui/Textarea";
 import Button from "./ui/Button";
 
-const ChatDetail = ({fromData}) => {
+const ChatDetail = ({fromData, unsetChat}) => {
     const { user } = useAuth();
     const fromFullName = `${fromData?.name || ''} ${fromData?.lastName || ''}`.trim();
     const infiniteRef = useRef();
@@ -26,11 +26,16 @@ const ChatDetail = ({fromData}) => {
 
         try {
             infiniteRef.current?.loading();
-            const data = await getMessages(fromData._id, { page: page.current, limit: 20 });
+            let data = await getMessages(fromData._id, { page: page, limit: 20 });
+            console.log('messages loaded', data);
             if (data?.length) {
+                data = data.reverse();
                 setMessages(prev => [...data, ...prev]);
+                setPage(prev => prev + 1);
+            } else if (data !== null) {
+                infiniteRef.current?.stop();
             }
-            setPage(prev => prev + 1);
+            
         } catch (error) {
             toast.error('Error al cargar los mensajes');
         } finally {
@@ -65,10 +70,17 @@ const ChatDetail = ({fromData}) => {
         resetMessages();
     }, [fromData?._id]);
 
+    useEffect(() => {
+        if (infiniteRef.current && page <= 2) {
+            console.log('scroll to bottom');
+            infiniteRef.current.scrollToBottom();
+        }
+    }, [messages]);
+
     return (
-        <div className="h-full grid grid-rows-[auto_1fr_auto]">
-            <div className="w-full border border-gray-900 flex items-center">
-                <ArrowLeft className="h-6 w-6 m-4 cursor-pointer" onClick={() => navigate('/messages')} />
+        <div id="nx-chat" className="h-full grid grid-rows-[auto_1fr_auto]">
+            <div id="nx-chat-info" className="w-full border-b border-gray-900 flex items-center">
+                <ArrowLeft className="h-6 w-6 m-4 cursor-pointer" onClick={() => unsetChat()} />
                 <span>Chats</span>
             </div>
             <div className="flex items-center p-4 border-b border-gray-800">
@@ -79,7 +91,13 @@ const ChatDetail = ({fromData}) => {
                 </div>
             </div>
             <div id="nx-chat-messages" className="flex-1 overflow-y-auto">
-                <InfiniteScroll ref={infiniteRef} scrollTarget="#nx-chat-messages" className="h-[calc(100vh-300px)] overflow-y-auto px-4" reverse={true}>
+                <InfiniteScroll id="nx-messages-list" 
+                    ref={infiniteRef} 
+                    scrollTarget="#nx-chat-messages" 
+                    className="h-[calc(100vh-300px)] px-4" 
+                    reverse={true}
+                    loadMore={loadMessages}
+                >
                     {
                         messages.map((message) => (
                             <MessageElement key={message._id} message={message} />
@@ -89,7 +107,15 @@ const ChatDetail = ({fromData}) => {
             </div>
             <div className="grid grid-cols-4 px-8 pt-4 border-t border-gray-800">
                 <div className="col-span-3">
-                    <Textarea value={newMessage} onChange={(e) => setNewMessage(e?.target?.value)} placeholder="Escribe un mensaje..." className="h-20" containerClass="mb-0" />
+                    <Textarea 
+                        rows={2} 
+                        onEnter={toSendMessage} 
+                        value={newMessage} 
+                        onChange={(e) => setNewMessage(e?.target?.value)} 
+                        placeholder="Escribe un mensaje..." 
+                        className="h-20" 
+                        containerClass="mb-0" 
+                    />
                 </div>
 
                 <div className="ml-4 col-span-1 flex items-center">

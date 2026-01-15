@@ -14,8 +14,8 @@ export const messageService = () => {
         return data;
     }
 
-    const getMessages = async (fromId) => {
-        const { data, error } = await execute(`${BASE_API}chats/${fromId}`, 'GET');
+    const getMessages = async (fromId, params = {}) => {
+        const { data, error } = await execute(`${BASE_API}chats/${fromId}`, 'GET', params);
         if (error) {
             toast.error(error.message);
             throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues

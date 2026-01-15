@@ -5,8 +5,9 @@ import { DotIcon, Loader2, MessageCircleOffIcon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import Avatar from "./ui/Avatar";
 import { useNavigate } from "react-router-dom";
+import { cn } from "../utils/helpers";
 
-const ChatsList = () => {
+const ChatsList = ({onSelect, selected}) => {
     const { user } = useAuth();
     const [chats, setChats] = useState([]);
     const { getChats } = messageService()
@@ -50,16 +51,17 @@ const ChatsList = () => {
     return (
         <>
             {chats?.map((chat) => (
-                <div key={chat.userId} onClick={() => navigate(`/messages/${chat.user.username}`)} className="p-4 border-b border-gray-800 hover:bg-gray-800 cursor-pointer">
-                    <div className="flex items-center mb-2">
-                        <Avatar src={chat?.user?.avatar} alt={`${chat?.user?.name} ${chat?.user?.lastName}`} size="sm" className="mr-4" />
-                        <div className="font-bold text-white capitalize">
-                            {`${chat?.user?.name} ${chat?.user?.lastName}`}
+                <div key={chat.userId} onClick={() => onSelect(chat.user)} className={cn("p-1 lg:p-3 border-b border-gray-800 hover:bg-gray-800 cursor-pointer", {"bg-gray-800": selected?._id === chat?.user?._id})}>
+                    <div className="flex mb-2">
+                        <div className="flex items-center">
+                            <Avatar src={chat?.user?.avatar} alt={`${chat?.user?.name} ${chat?.user?.lastName}`} size="sm" className="mr-4" />
+                            <div className="font-bold text-sm text-white capitalize">
+                                {`${chat?.user?.name} ${chat?.user?.lastName}`}
+                                <span className="text-gray-400 text-xs font-light block">
+                                    @{chat?.user?.username}
+                                </span>
+                            </div>
                         </div>
-                        <span className="text-gray-400 text-sm">
-                            <DotIcon className="inline-block h-3 w-3 mx-2" />
-                            @{chat?.user?.username}
-                        </span>
                         <div className="ml-auto text-xs text-gray-500">
                             {new Date(chat.lastMessage?.createdAt).toLocaleDateString()}
                         </div>
