@@ -63,12 +63,22 @@ export const userService = () => {
         return data;
     }
 
+    const toSearch = async (query) => {
+        const { data, error } = await execute(`${BASE_API}search`, 'GET', { q: query });
+        if (error) {
+            toast.error(error.message);
+            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
+        }
+        return data;
+    }
+
     return {
         store,
         index,
         update,
         show,
         toFollow,
-        showByUsername
+        showByUsername,
+        toSearch
     }
 }
