@@ -33,7 +33,7 @@ const LoginForm = ({ ref }) => {
     }))
 
     return (
-        <form action="#" method="POST" className="space-y-6">
+        <form action="#" method="POST" className="space-y-8">
             {
                 loginDefinitions.map(({name, label, type}) => (
                     <div key={name}>

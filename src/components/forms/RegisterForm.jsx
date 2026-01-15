@@ -156,12 +156,12 @@ const RegisterForm = ({ref, createMode = 'register', userData, children}) => {
     }
     
     return (
-        <form onSubmit={(e) => e.preventDefault()} action="#" method="POST" className={cn("space-y-6 register-form", {"profile-mode": ['edit','admin'].includes(createMode)})}>
+        <form onSubmit={(e) => e.preventDefault()} action="#" method="POST" className={cn("space-y-2.5 register-form", {"profile-mode": ['edit','admin'].includes(createMode)})}>
             {
                 validFields.map((data) => (
                     <div key={data.name} className="input-group">
                         <label
-                            className="block text-sm/6 font-medium text-gray-500"
+                            className="block text-sm font-medium text-gray-500"
                         >
                             {data.label}
                         </label>
