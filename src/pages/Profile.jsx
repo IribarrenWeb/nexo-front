@@ -30,7 +30,7 @@ const Profile = () => {
 	}, [profileUser, user]);
 
 	const modalRef = useRef(null);
-	const fullName = useMemo(() => `${user.name} ${user.lastName}`, [user]);
+	const fullName = useMemo(() => `${profileUser?.name} ${profileUser?.lastName}`, [profileUser]);
 
 	const loadUser = async (reload = false) => {
 		try {
@@ -45,8 +45,6 @@ const Profile = () => {
 			}
 
 			setProfileUser(uData); // seteamos el usuario de perfil
-		} catch (error) {
-			toast.error("Error al cargar el usuario");	
 		} finally {
 			setLoading(false);
 		}
@@ -79,6 +77,8 @@ const Profile = () => {
 				<span className="text-gray-400 text-2xl">Usuario no encontrado</span>
 			</div>
 		)
+	} else if (!profileUser?._id && loading) { // estado de carga
+		return <Loader show={true} />
 	}
 
 	return (
@@ -94,7 +94,7 @@ const Profile = () => {
 							<div className="relative w-30 lg:w-36 xl:w-40 h-10 pt-4 pb-6 mr-1 lg:mr-2 xl:mr-4">
 								<Avatar
 									size="xxxl"
-									src={profileUser.avatar}
+									src={profileUser?.avatar}
 									alt={`${profileUser.name} ${profileUser.lastName}`}
 									className="mx-auto absolute -top-10 lg:-top-16 xl:-top-20 border-5 border-gray-950"
 								/>
