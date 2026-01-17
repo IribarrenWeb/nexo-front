@@ -37,8 +37,9 @@ const PostElement = ({postData, className, editable = true, onClick, detailMode 
     }
 
     // funcion para dar like a un post
-    const toLike = async () => {
+    const toLike = async (e) => {
         try {
+            e.stopPropagation(); // evitamos que el click se propague al contenedor padre y abra el detalle del post
             const res = await liked(modelPost._id);
             setModelPost(prevPost => ({...prevPost, likes: res.likes})); // actualizamos los likes del post
         } catch (error) {
@@ -52,7 +53,7 @@ const PostElement = ({postData, className, editable = true, onClick, detailMode 
 
     return (
         <>
-            <div onClick={onClick} className={cn('bg-white p-5 hover:rounded-lg shadow-md', className)}>
+            <div onClick={onClick} className={cn('bg-white p-5 shadow-md', className)}>
                 <div className={cn({"flex": !detailMode})}>
                     {
                         !detailMode &&
