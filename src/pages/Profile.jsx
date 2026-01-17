@@ -18,12 +18,14 @@ const Profile = () => {
 	const { showByUsername, toFollow } = userService();
 
 	const { username } = useParams();
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [loadingFollow, setLoadingFollow] = useState(false);
 	const [profileUser, setProfileUser] = useState(null);
 
+	// computada para saber si el perfil es del usuario autenticado
 	const isAuthUser = useMemo(() => !username || username === user.username, [username, user]);
 	
+	// computada para saber si el usuario autenticado sigue al usuario del perfil
 	const isAuthUserFollow = useMemo(() => {
 		if (isAuthUser) return false;
 		return profileUser?.followers?.includes(user._id);
@@ -32,6 +34,7 @@ const Profile = () => {
 	const modalRef = useRef(null);
 	const fullName = useMemo(() => `${profileUser?.name} ${profileUser?.lastName}`, [profileUser]);
 
+	// funcion para cargar el usuario del perfil a mostrar
 	const loadUser = async (reload = false) => {
 		try {
 			setLoading(true);
@@ -44,12 +47,19 @@ const Profile = () => {
 				uData = await showByUsername(username); // cargamos el usuario por username
 			}
 
+			// retornamos ya que si es null
+			// el error es por abortController y no hay que tomarlo en cuenta
+			if (uData === null) return;
+
 			setProfileUser(uData); // seteamos el usuario de perfil
-		} finally {
+
+			setLoading(false);
+		} catch (error) {
 			setLoading(false);
 		}
 	}
 
+	// funcion para seguir/dejar de seguir al usuario
 	const triggerFollow = async () => {
 		try {
 			setLoadingFollow(true);
@@ -108,16 +118,16 @@ const Profile = () => {
 								</div>
 							</div>
 						</div>
-						<div className="flex items-start pt-3 lg:pt-0 lg:items-center h-full justify-end lg:min-w-1/6">
+						<div className="flex items-start pt-3 lg:pt-0 lg:items-center h-full justify-end lg:min-w-1/6 ml-4">
 							{
 								isAuthUser ? (
 									<Button className="w-auto" onClick={() => modalRef.current.trigger()}>Editar perfil</Button>
 								) : (
 									<>
-										<Button loading={loadingFollow} outline={isAuthUserFollow} className="w-auto" onClick={triggerFollow}>
+										<Button size="sm" loading={loadingFollow} outline={isAuthUserFollow} className="w-auto" onClick={triggerFollow}>
 											{isAuthUserFollow ? 'Dejar de seguir' : 'Seguir'}
 										</Button>
-										<Button outline={true} className="w-auto ml-4" to={`/messages/${profileUser.username}`}>
+										<Button size="sm" outline={true} className="w-auto ml-4" to={`/messages/${profileUser.username}`}>
 											<Send className="inline-block" />
 										</Button>
 									</>
