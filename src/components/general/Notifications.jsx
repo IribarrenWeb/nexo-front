@@ -12,6 +12,7 @@ const Notifications = () => {
     const { getNotifications, markRead, remove } = notificationService()
     const { user } = useAuth()
     const [show, setShow] = useState(false)
+    const audio = new Audio('/noti-sound.wav');
 
     // notificaciones no leidas computadas
     const unread = useMemo(() => {
@@ -46,6 +47,8 @@ const Notifications = () => {
     const handleNewNotification = (notification) => {
         // agregamos la nueva notificacion al inicio de la lista
         setNotifications(prev => [notification, ...prev])
+        
+        audio.play()
     }
 
     // escuchamos nuevas notificaciones
