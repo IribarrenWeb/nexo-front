@@ -41,7 +41,7 @@ const PostList = ({ref, userId, onSelect}) => {
 
     const resetPosts = () => {
         setPosts([]);
-        setPage(1);
+        setPage(0);
         loadPosts();
     }
 
