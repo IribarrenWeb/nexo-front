@@ -11,14 +11,16 @@ const Post = () => {
     const { id } = useParams();
     const [postData, setPostData] = useState(null);
     const [loading, setLoading] = useState(false);
-    const commentsRef = useRef(null);
+    const commentsRef = useRef(null); // referencia al componente CommentsList
     const { show } = postService();
     const navigate = useNavigate();
 
+    // funcion para volver a la pagina anterior
     const goBack = () => {
         navigate(-1);
     }
 
+    // funcion para cargar los datos del post
     const loadPostData = async () => {
         try {
             setLoading(true);
@@ -41,6 +43,7 @@ const Post = () => {
         loadPostData();
     }, [id]);
 
+    // mientras se cargan los datos
     if (loading) {
         return (
             <div className="p-5 text-center text-gray-500">
@@ -50,6 +53,7 @@ const Post = () => {
         )
     }
 
+    // si no se encuentra el post
     if (!postData) {
         return (
             <div className="p-5 text-center text-gray-500">
