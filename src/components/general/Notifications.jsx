@@ -4,6 +4,7 @@ import { toast } from "sonner"
 import { notificationService } from "../../services/notification-service"
 import { useAuth } from "../../context/AuthContext"
 import { cn } from "../../utils/helpers"
+import { useNotification } from "../../hooks/useNotification"
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([])
@@ -41,6 +42,15 @@ const Notifications = () => {
         }
     }
 
+    // handler de nuevas notificaciones
+    const handleNewNotification = (notification) => {
+        // agregamos la nueva notificacion al inicio de la lista
+        setNotifications(prev => [notification, ...prev])
+    }
+
+    // escuchamos nuevas notificaciones
+    useNotification(`notifications-${user?._id ?? null}`, 'new-notification', handleNewNotification)
+    
     // cargamos las notificaciones al montar el componente y cuando cambie el usuario
     useEffect(() => {
         loadNotifications()
