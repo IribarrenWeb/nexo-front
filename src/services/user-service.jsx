@@ -27,6 +27,7 @@ export const userService = () => {
         return data;
     }
 
+    // funcion para actualizar un usuario
     const update = async (userId, formData) => {
         const { data, error } = await execute(`${BASE_API}${userId}`, 'PUT', formData);
         if (error) {
@@ -36,6 +37,7 @@ export const userService = () => {
         return data;
     }
 
+    // funcion para obtener un usuario por su id
     const show = async (userId) => {
         const { data, error } = await execute(`${BASE_API}${userId}`, 'GET');
         if (error) {
@@ -45,6 +47,7 @@ export const userService = () => {
         return data;
     }
 
+    // funcion para obtener un usuario por su username
     const showByUsername = async (username) => {
         const { data, error } = await execute(`${BASE_API}by-username/${username}`, 'GET');
         if (error) {
@@ -54,6 +57,7 @@ export const userService = () => {
         return data;
     }
 
+    // funcion para seguir/des-seguir a un usuario
     const toFollow = async (userId) => {
         const { data, error } = await execute(`${BASE_API}follow/${userId}`, 'PUT', {});
         if (error) {
@@ -63,6 +67,7 @@ export const userService = () => {
         return data;
     }
 
+    // funcion para buscar usuarios
     const toSearch = async (query) => {
         const { data, error } = await execute(`${BASE_API}search`, 'GET', { q: query });
         if (error) {

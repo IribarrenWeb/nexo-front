@@ -5,12 +5,14 @@ import { cn } from '../utils/helpers';
 
 const AuthLayout = () => {
     
+    // computada para saber si estamos en la ruta de registro
     const isRegister = useMemo(() => {
         return window.location.pathname === '/register'
     }, [window.location.pathname])
 
     const navigate = useNavigate();
 
+    // funcion para redirigir al login
     const redirectToLogin = () => {
         navigate('/login')
     }

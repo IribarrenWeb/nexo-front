@@ -11,10 +11,11 @@ const AppLayout = () => {
     const { me } = authService();
     const { setUser } = useAuth();
     
+    // cargar los datos del usuario al montar el componente
     useEffect(() => {
         me().then((user) => {
             if (!user) return;
-            setUser(user);
+            setUser(user); // seteamos el usuario en el contexto
         });
     }, []);
 

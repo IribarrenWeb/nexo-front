@@ -6,6 +6,7 @@ const BASE_API = 'auth/'
 export const authService = () => {
     const { execute } = useFetch();
     
+    // metodo para iniciar sesion
     const login = async (formData) => {
         const { data, error } = await execute(`${BASE_API}login`, 'POST', formData);
 
@@ -18,6 +19,7 @@ export const authService = () => {
         throw new Error(error.message);
     }
 
+    // metodo para obtener los datos del usuario logueado
     const me = async () => {
         try {
             const { data, error } = await execute(`${BASE_API}me`, 'GET');

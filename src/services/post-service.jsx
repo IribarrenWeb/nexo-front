@@ -27,15 +27,7 @@ export const postService = () => {
         return data;
     }
 
-    const update = async (postId, formData) => {
-        const { data, error } = await execute(`${BASE_API}${postId}`, 'PUT', formData);
-        if (error) {
-            toast.error(error.message);
-            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
-        }
-        return data;
-    }
-
+    // metodo update para actualizar un post
     const show = async (postId) => {
         const { data, error } = await execute(`${BASE_API}${postId}`, 'GET');
         if (error) {
@@ -45,6 +37,7 @@ export const postService = () => {
         return data;
     }
 
+    // metodo liked para dar like a un post
     const liked = async (postId) => {
         const { data, error } = await execute(`${BASE_API}like/${postId}`, 'PUT', {});
         if (error) {
@@ -57,7 +50,6 @@ export const postService = () => {
     return {
         store,
         index,
-        update,
         show,
         liked
     }

@@ -6,6 +6,7 @@ import { messageService } from "../../services/message-service";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNotification } from "../../hooks/useNotification";
 
+// definicion de los menus del sidebar
 const menus = [
   { name: "Feed", href: "/", icon: LayoutDashboardIcon },
   { name: "Perfil", href: "/profile", icon: User },

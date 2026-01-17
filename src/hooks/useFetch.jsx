@@ -43,48 +43,58 @@ export const useFetch = () => {
      * @returns 
      */
     const execute = useCallback(async (url, method = 'GET', data = {}) => {
+
+        // validar metodo
         if (!validMethods.includes(method.toUpperCase())) throw new Error(`Metodo no valido: ${method}`);
+        
+        // obtener la ruta actual para redireccionar en caso de 401
         const actualPath = window.location.pathname;
 
+        // inicializar el resultado
         const result = {
             data: null,
             error: null
         }
 
         try {
-            const signal = generateAbort()
-            const access_token = localStorage.getItem('access_token');
+            const signal = generateAbort() // generar un nuevo abort controller
+            const access_token = localStorage.getItem('access_token'); // obtener el token de acceso
 
+            // inicializar las opciones de la peticion
             const options = {
               method: method.toUpperCase(),
-              signal,
+              signal, // pasamos el signal para poder abortar la peticion
               headers: {
                 'Content-Type': 'application/json',
               }
             }
 
+            // si hay token de acceso, añadir a las cabeceras
             if (access_token) {
                 options.headers['Authorization'] = `Bearer ${access_token}`;
             }
 
+            // si el metodo no es GET, añadir el body
             if (method.toUpperCase() != 'GET') {
                 options.body = JSON.stringify(data);
-            } else {
+            } else { // si es GET, añadir los parametros a la url
                 url += Object.keys(data).length ? '?' + new URLSearchParams(data).toString() : '';
             }
 
+            // ejecutar la peticion fetch
             const res = await fetch(API_URL + url, options);
-            result.data = await res.json();
+            result.data = await res.json(); // parsear la respuesta como json
 
+            // si la respuesta no es ok, procesar el error
             if (!res.ok) {
-                let message = result.data.mensaje ?? 'Ocurrio algo inesperado';
+                let message = result.data.mensaje ?? 'Ocurrio algo inesperado'; // extraer el mensaje de error
                 if (res.status === 401 && actualPath != '/login') { // si es 401 (no autrizado), redirigir al login
                     navigate('/login');
                     message = 'No autorizado. Redirigiendo al login.';
                 }
-                throw new Error(message);
+                throw new Error(message); // lanzar el error
             }
-        } catch (error) {
+        } catch (error) { // capturar errores generales
             result.error = error instanceof Error ? error : new Error('Error desconocido')
             
             if (error.name === 'AbortError') result.error = null; // si es un abort, omitir el error
@@ -92,6 +102,7 @@ export const useFetch = () => {
         return result;
     }, [])
 
+    // limpiar el abort controller al desmontar el componente
     useEffect(() => {
         return () => {
             generateAbort(true)

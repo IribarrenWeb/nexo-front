@@ -11,10 +11,12 @@ const ProfileNav = () => {
         console.log('ProfileNav USER', user);
     }, [user]);
 
+    // funcion para cerrar sesion
     const toLogout = () => {
         logout();
-        navigate('/login');
+        navigate('/login'); // redirigimos al login
     }
+
     return (
         <div className="flex items-center">
             <Dropdown triggerClass="hover:text-gray-400" actions={[{ label: 'Logout', onClick: () => toLogout() }]}>
