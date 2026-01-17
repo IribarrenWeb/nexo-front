@@ -59,7 +59,7 @@ const Post = () => {
     }
 
     return (
-        <>
+        <div className="px-8 py-5">
             <div className="text-2xl font-bold mb-10 text-gray-200">
                 <MoveLeft className="cursor-pointer inline-block mr-10" onClick={goBack} /> 
                 Post
@@ -67,7 +67,7 @@ const Post = () => {
             <PostElement className="bg-gray-950" detailMode postData={postData} />
             <ReplyCreator className="-mx-10 border-b border-gray-700 pb-5" postId={postData._id} onReplied={handleReplied} />
             <CommentsList ref={commentsRef} postId={postData._id} />
-        </>
+        </div>
     )
 }
 
