@@ -50,6 +50,11 @@
   font-size: 1rem;
 }
 
+.nx-btn-sm {
+  padding: 0.25rem 1rem;
+  font-size: 0.875rem;
+}
+
 #nx-chat-messages {
   background-image: url('/images/chat-back.png');
   background-size: contain;
@@ -123,12 +128,15 @@
 
 @media (max-width: 767px) {
   #nx-chats {
+    grid-column: span 5 / span 5;
     &.selected-chat {
       display: none;
     }
   }
   #nx-chat-container {
+    display: none;
     &.selected-chat {
+      display: block;
       grid-column: span 5 / span 5;
     }
   }
