@@ -17,7 +17,7 @@ const Post = () => {
 
     // funcion para volver a la pagina anterior
     const goBack = () => {
-        navigate(-1);
+        navigate('/');
     }
 
     // funcion para cargar los datos del post

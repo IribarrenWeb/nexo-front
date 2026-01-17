@@ -62,7 +62,7 @@ const Sidebar = () => {
                                     <menu.icon className="h-5 w-5 just" />
                                     <span className="hidden lg:block">{menu.name}</span>
                                     { canShowUnreadBadge && menu.name === 'Mensajes' && (
-                                        <span className="absolute bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 right-0 top-0">
+                                        <span className="absolute lg:static bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 right-0 top-0">
                                             {unreadMsgCount}
                                         </span>
                                     ) }
