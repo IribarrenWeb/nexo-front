@@ -37,16 +37,6 @@ export const messageService = () => {
         return data;
     }
 
-    // metodo update para actualizar un message
-    const update = async (commentId, formData) => {
-        const { data, error } = await execute(`${BASE_API}${commentId}`, 'PUT', formData);
-        if (error) {
-            toast.error(error.message);
-            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
-        }
-        return data;
-    }
-
     // marcar mensajes como leidos
     const toRead = async (fromId) => {
         const { data, error } = await execute(`${BASE_API}mark-read/${fromId}`, 'PUT');
@@ -69,7 +59,6 @@ export const messageService = () => {
 
     return {
         store,
-        update,
         getChats,
         getMessages,
         toRead,
