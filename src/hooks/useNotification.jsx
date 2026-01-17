@@ -1,7 +1,14 @@
 import Pusher from "pusher-js";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const useNotification = (room, event, callback) => {
+    const callbackRef = useRef(callback);
+
+    // actualizar la referencia del callback si cambia
+    useEffect(() => {
+        callbackRef.current = callback;
+    }, [callback]);
+
     useEffect(() => {
         
         // configurar Pusher
@@ -14,7 +21,7 @@ export const useNotification = (room, event, callback) => {
         
         // escuchar el evento
         channel.bind(event, (data) => {
-            callback(data);
+            if (callbackRef.current) callbackRef.current(data);
         });
 
         // limpiar la suscripcion al desmontar el componente
