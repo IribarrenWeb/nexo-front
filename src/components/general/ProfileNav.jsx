@@ -7,9 +7,6 @@ import Avatar from "../ui/Avatar";
 const ProfileNav = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
-    useEffect(() => {
-        console.log('ProfileNav USER', user);
-    }, [user]);
 
     // funcion para cerrar sesion
     const toLogout = () => {
