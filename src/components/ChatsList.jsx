@@ -52,7 +52,7 @@ const ChatsList = ({ref, onSelect, selected}) => {
     // funcion para actualizar el ultimo mensaje de un chat
     const updateLastMessage = (message) => {
         setChats((prevChats) => {
-            const fromId = message.from.id === user._id ? message.to.id : message.from.id;
+            const fromId = message.from?._id === user._id ? message.to?._id : message.from?._id;
             const isSelected = selected && selected._id === fromId;
             
             if (isSelected) {
@@ -64,8 +64,8 @@ const ChatsList = ({ref, onSelect, selected}) => {
             // actualizamos el ultimo mensaje del chat correspondiente
             const updatedChats = prevChats.map((chat) => {
                 // validamos si el mensaje pertenece al chat actual
-                if (chat.userId === message.from.id || chat.userId === message.to.id) {
-                    const incrementUnread = message.to.id === user._id && !message.read; // validamos si debemos incrementar el contador de mensajes no leidos
+                if (chat.userId === message.from?._id || chat.userId === message.to._id) {
+                    const incrementUnread = message.to._id === user._id && !message.read; // validamos si debemos incrementar el contador de mensajes no leidos
                     return {
                         ...chat,
                         lastMessage: message,
@@ -83,7 +83,7 @@ const ChatsList = ({ref, onSelect, selected}) => {
 
     // handler de nueva notificacion de mensaje
     const handleNewMessage = (message) => {
-        const chatExists = chats.findIndex(chat => chat.userId === message.from.id || chat.userId === message.to.id); // verificamos si el chat ya existe
+        const chatExists = chats.findIndex(chat => chat.userId === message.from?._id || chat.userId === message.to?._id); // verificamos si el chat ya existe
         
         if (chatExists) updateLastMessage(message); // si el chat existe, actualizamos el ultimo mensaje
         else loadChats(); // si el chat no existe, recargamos los chats para añadir el nuevo chat
