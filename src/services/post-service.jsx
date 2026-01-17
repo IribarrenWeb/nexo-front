@@ -47,10 +47,21 @@ export const postService = () => {
         return data;
     }
 
+    // metodo loadVirals para obtener los posts virales
+    const loadVirals = async () => {
+        const { data, error } = await execute(`${BASE_API}viral`, 'GET');
+        if (error) {
+            toast.error(error.message);
+            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
+        }
+        return data;
+    }
+
     return {
         store,
         index,
         show,
-        liked
+        liked,
+        loadVirals,
     }
 }
