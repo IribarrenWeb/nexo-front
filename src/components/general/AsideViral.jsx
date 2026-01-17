@@ -43,14 +43,14 @@ const AsideViral = () => {
             <div className={cn("p-5 text-center text-gray-500 hidden", {'block': loading})}>
                 Cargando nexos virales...
             </div>
-            {!loading && !viralPosts && (
+            {!loading && !viralPosts?.length && (
                 <div className="p-5 text-center text-gray-500">
                     No se encontraron nexos virales.
                 </div>
             )}
 
             <div className="px-3 "> 
-                {!loading && viralPosts?.length &&
+                {!loading && viralPosts?.length ?
                     viralPosts.map((post) => (
                         <div onClick={() => toPost(post._id)} key={post._id} className="cursor-pointer border relative rounded-lg mb-3 bg-gray-500 border-gray-800 p-3 text-gray-800 hover:bg-gray-700 transition hover:text-gray-400">
                             <p className="font-semibold text-sm">
@@ -67,7 +67,7 @@ const AsideViral = () => {
                                 {new Date(post.createdAt).toLocaleDateString()}
                             </span>
                         </div>
-                    ))
+                    )) : null
                 }
             </div>
 
