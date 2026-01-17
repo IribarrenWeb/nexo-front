@@ -23,7 +23,7 @@ const POST_FORM_DEFINITION = [
 ]
 
 const PostCreator = ({onPosted}) => {
-    const { fullName } = useAuth();
+    const { fullName, user } = useAuth();
     const { formValues, errors, handleChanges, resetForm, isValid, setAsyncValidations } = useForm({
       ...POST_MODEL,
     }, POST_FORM_DEFINITION);
@@ -56,7 +56,7 @@ const PostCreator = ({onPosted}) => {
         <>
             <div className="flex px-5">
                 <div className="">
-                    <Avatar size="lg" alt={fullName} />
+                    <Avatar src={user?.avatar} size="lg" alt={fullName} />
                 </div>
                 <div className="w-full ml-4">
                     <Textarea
