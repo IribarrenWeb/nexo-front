@@ -7,6 +7,7 @@ const MessageElement = ({ message }) => {
     const { user } = useAuth();
     const fromMe = useMemo(() => message.from._id === user._id, [message.from._id, user._id]);
 
+    // formateamos la fecha del mensaje
     const messageDate = useMemo(() => {
         const date = new Date(message.createdAt);
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -19,7 +20,7 @@ const MessageElement = ({ message }) => {
         })}>
             {!fromMe && (
                 <div className="mr-2 mt-3">
-                    <Avatar size="sm" alt={message.from.name} src={message.from.avatar} />
+                    <Avatar size="sm" alt={message.from.fullName} src={message.from.avatar} />
                 </div>
             )}
             <div className={cn("max-w-xl px-4 py-2 my-2 rounded-lg", {
@@ -31,7 +32,7 @@ const MessageElement = ({ message }) => {
             </div>
             {fromMe && (
                 <div className="ml-2 mt-3">
-                    <Avatar size="sm" alt={message.from.name} src={message.from.avatar} />
+                    <Avatar size="sm" alt={message.from.fullName} src={message.from.avatar} />
                 </div>
             )}
         </div>
