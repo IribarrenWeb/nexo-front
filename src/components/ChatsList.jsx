@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useImperativeHandle, useState } from "react";
 import { messageService } from "../services/message-service";
 import { toast } from "sonner";
 import { Loader2, MessageCircleOffIcon } from "lucide-react";
@@ -7,7 +7,7 @@ import Avatar from "./ui/Avatar";
 import { cn } from "../utils/helpers";
 import { useNotification } from "../hooks/useNotification";
 
-const ChatsList = ({onSelect, selected}) => {
+const ChatsList = ({ref, onSelect, selected}) => {
     const { user } = useAuth();
     const [chats, setChats] = useState([]);
     const { getChats, toRead } = messageService()
@@ -52,12 +52,20 @@ const ChatsList = ({onSelect, selected}) => {
     // funcion para actualizar el ultimo mensaje de un chat
     const updateLastMessage = (message) => {
         setChats((prevChats) => {
-
+            const fromId = message.from.id === user._id ? message.to.id : message.from.id;
+            const isSelected = selected && selected._id === fromId;
+            
+            if (isSelected) {
+                // si el chat esta seleccionado, marcamos el mensaje como leido
+                message.read = true;
+                toRead(fromId);
+            }
+            
             // actualizamos el ultimo mensaje del chat correspondiente
             const updatedChats = prevChats.map((chat) => {
                 // validamos si el mensaje pertenece al chat actual
-                if (chat.userId === message.from || chat.userId === message.to) {
-                    const incrementUnread = message.to === user._id && !message.read; // validamos si debemos incrementar el contador de mensajes no leidos
+                if (chat.userId === message.from.id || chat.userId === message.to.id) {
+                    const incrementUnread = message.to.id === user._id && !message.read; // validamos si debemos incrementar el contador de mensajes no leidos
                     return {
                         ...chat,
                         lastMessage: message,
@@ -75,7 +83,7 @@ const ChatsList = ({onSelect, selected}) => {
 
     // handler de nueva notificacion de mensaje
     const handleNewMessage = (message) => {
-        const chatExists = chats.findIndex(chat => chat.userId === message.from || chat.userId === message.to); // verificamos si el chat ya existe
+        const chatExists = chats.findIndex(chat => chat.userId === message.from.id || chat.userId === message.to.id); // verificamos si el chat ya existe
         
         if (chatExists) updateLastMessage(message); // si el chat existe, actualizamos el ultimo mensaje
         else loadChats(); // si el chat no existe, recargamos los chats para añadir el nuevo chat
@@ -83,6 +91,11 @@ const ChatsList = ({onSelect, selected}) => {
 
     // suscripcion a nuevas notificaciones de mensajes
     useNotification(`messages-${user?._id ?? null}`, "new-message", handleNewMessage);
+
+    // exponemos el metodo updateLastMessage al componente padre
+    useImperativeHandle(ref, () => ({
+        updateLastMessage
+    }));
     
     useEffect(() => {
         loadChats();

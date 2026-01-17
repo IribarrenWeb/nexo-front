@@ -6,18 +6,17 @@ import { messageService } from "../services/message-service";
 import { toast } from "sonner";
 import MessageElement from "./MessageElement";
 import { ArrowLeft, Send } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import Textarea from "./ui/Textarea";
 import Button from "./ui/Button";
+import { useNotification } from "../hooks/useNotification";
 
-const ChatDetail = ({fromData, unsetChat}) => {
+const ChatDetail = ({fromData, unsetChat, onSendMessage}) => {
     const { user } = useAuth();
     const fromFullName = `${fromData?.name || ''} ${fromData?.lastName || ''}`.trim();
     const infiniteRef = useRef();
     const [page, setPage] = useState(1);
     const [messages, setMessages] = useState([]);
     const { getMessages, store: sendMessage } = messageService();
-    const navigate = useNavigate();
     const [newMessage, setNewMessage] = useState(''); 
     const [sending, setSending] = useState(false);
     
@@ -43,15 +42,25 @@ const ChatDetail = ({fromData, unsetChat}) => {
         }
     }
 
+    // funcion para enviar un mensaje
     const toSendMessage = async () => {
         try {
-            setSending(true);
+            setSending(true); // seteamos el loading
+            
+            // enviamos el mensaje
             const data = await sendMessage({
                 to: fromData._id,
                 content: newMessage,
             })
+
+            // añadimos el mensaje a la lista
             setMessages(prev => [...prev, data]);
             setNewMessage('');
+
+            // notificamos al componente padre que se ha enviado un mensaje
+            // para que pueda actualizar el ultimo mensaje del chat
+            if (onSendMessage) onSendMessage(data);
+
             toast.success('Mensaje enviado');
         } catch (error) {
             console.error(error);
@@ -61,18 +70,30 @@ const ChatDetail = ({fromData, unsetChat}) => {
         }
     }
 
+    // funcion para resetear los mensajes
     const resetMessages = () => {
-        setMessages([]);
-        setPage(1);
-        loadMessages();
+        setMessages([]); // limpiamos los mensajes
+        setPage(1); // reseteamos la pagina a 1
+        loadMessages(); // cargamos los mensajes nuevamente
     }
-    useEffect(() => {
-        resetMessages();
-    }, [fromData?._id]);
+
+    // manejador de nueva notificacion de mensaje
+    const handleNewMessage = (message) => {
+        // agregamos el nuevo mensaje a la lista de ultimo
+        setMessages((prevMessages) => [...prevMessages, message]);
+    }
+
+    // suscripcion a nuevas notificaciones de mensajes
+    useNotification(`messages-${user._id??null}`, 'new-message', handleNewMessage);
+
 
     useEffect(() => {
+        resetMessages();
+    }, [fromData?._id]); // actualizams mensajes en caso de cambial el id del chat
+
+    useEffect(() => {
+        // mandamos el scroll al final apenas se carga la primera pagina
         if (infiniteRef.current && page <= 2) {
-            console.log('scroll to bottom');
             infiniteRef.current.scrollToBottom();
         }
     }, [messages]);
