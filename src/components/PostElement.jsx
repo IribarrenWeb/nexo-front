@@ -6,12 +6,14 @@ import { toast } from "sonner";
 import { postService } from "../services/post-service";
 import { useMemo, useRef, useState } from "react";
 import ModalPostComment from "./modals/ModalPostComment";
+import { useNavigate } from "react-router-dom";
 
 const PostElement = ({postData, className, editable = true, onClick, detailMode = false}) => {
     const { user } = useAuth();
     const { liked } = postService();
     const [modelPost, setModelPost] = useState({...postData});
     const replyRef =  useRef();
+    const navigate = useNavigate();
 
     // nombre completo del autor
     const authorFullName = `${modelPost.author.name} ${modelPost.author.lastName}`;
@@ -47,6 +49,15 @@ const PostElement = ({postData, className, editable = true, onClick, detailMode 
         }
     }
 
+    const toUserProfile = (e, username) => {
+        e.stopPropagation();
+        if (username === user.username) {
+            navigate(`/profile`);
+            return;
+        }
+        navigate(`/${username}`);
+    }
+
     const handleCommented = (newComment) => {
         setModelPost(p => ({...p, comments: [...p.comments, newComment]}));
     }
@@ -71,7 +82,7 @@ const PostElement = ({postData, className, editable = true, onClick, detailMode 
                                         <Avatar src={modelPost.author.avatar} alt={authorFullName} size="lg" className="mb-4" />
                                     </div>
                                 }
-                                <h3 className="text-lg font-semibold text-gray-200 capitalize">
+                                <h3 onClick={(e) => toUserProfile(e, modelPost?.author?.username)} className="text-lg font-semibold cursor-pointer hover:text-blue-600 text-gray-200 capitalize">
                                     {authorFullName}
                                     <span className="text-sm text-gray-500 ml-2">@{modelPost.author.username}</span>
                                 </h3>
