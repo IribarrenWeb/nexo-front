@@ -73,7 +73,7 @@ const ChatDetail = ({fromData, unsetChat, onSendMessage}) => {
     // funcion para resetear los mensajes
     const resetMessages = () => {
         setMessages([]); // limpiamos los mensajes
-        setPage(1); // reseteamos la pagina a 1
+        setPage(0); // reseteamos la pagina a 1
         loadMessages(); // cargamos los mensajes nuevamente
     }
 
