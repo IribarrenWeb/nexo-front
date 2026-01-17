@@ -57,11 +57,22 @@ export const messageService = () => {
         return data;
     }
 
+    // obtener el total de mensajes no leidos
+    const getTotalUnread = async () => {
+        const { data, error } = await execute(`${BASE_API}chats/unread`, 'GET');
+        if (error) {
+            toast.error(error.message);
+            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
+        }
+        return data;
+    }
+
     return {
         store,
         update,
         getChats,
         getMessages,
         toRead,
+        getTotalUnread,
     }
 }
