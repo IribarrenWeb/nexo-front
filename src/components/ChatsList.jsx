@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { messageService } from "../services/message-service";
 import { toast } from "sonner";
-import { DotIcon, Loader2, MessageCircleOffIcon } from "lucide-react";
+import { Loader2, MessageCircleOffIcon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import Avatar from "./ui/Avatar";
-import { useNavigate } from "react-router-dom";
 import { cn } from "../utils/helpers";
+import { useNotification } from "../hooks/useNotification";
 
 const ChatsList = ({onSelect, selected}) => {
     const { user } = useAuth();
     const [chats, setChats] = useState([]);
-    const { getChats } = messageService()
+    const { getChats, toRead } = messageService()
     const [loading, setLoading] = useState(false)
-    const navigate = useNavigate();
 
+    // funcion para cargar los chats
     const loadChats = async () => {
         try {
             setLoading(true);
@@ -26,6 +26,64 @@ const ChatsList = ({onSelect, selected}) => {
         }
     }
 
+    // funcion para seleccionar un chat
+    const handleSelect = async (chat) => {
+        onSelect(chat.user);
+
+        // marcamos los mensajes como leidos
+        if (chat.unreadCount > 0) {
+            await toRead(chat.userId)
+
+            // actualizamos el contador de mensajes no leidos a 0
+            setChats((prevChats) => {
+                return prevChats.map((c) => {
+                    if (c.userId === chat.userId) {
+                        return {
+                            ...c,
+                            unreadCount: 0
+                        }
+                    }
+                    return c;
+                });
+            });
+        }
+    }
+
+    // funcion para actualizar el ultimo mensaje de un chat
+    const updateLastMessage = (message) => {
+        setChats((prevChats) => {
+
+            // actualizamos el ultimo mensaje del chat correspondiente
+            const updatedChats = prevChats.map((chat) => {
+                // validamos si el mensaje pertenece al chat actual
+                if (chat.userId === message.from || chat.userId === message.to) {
+                    const incrementUnread = message.to === user._id && !message.read; // validamos si debemos incrementar el contador de mensajes no leidos
+                    return {
+                        ...chat,
+                        lastMessage: message,
+                        unreadCount: incrementUnread ? chat.unreadCount + 1 : chat.unreadCount
+                    };
+                }
+                return chat;
+            });
+
+            // ordenamos los chats por fecha del ultimo mensaje
+            updatedChats.sort((a, b) => new Date(b.lastMessage.createdAt) - new Date(a.lastMessage.createdAt));
+            return updatedChats;
+        })
+    }
+
+    // handler de nueva notificacion de mensaje
+    const handleNewMessage = (message) => {
+        const chatExists = chats.findIndex(chat => chat.userId === message.from || chat.userId === message.to); // verificamos si el chat ya existe
+        
+        if (chatExists) updateLastMessage(message); // si el chat existe, actualizamos el ultimo mensaje
+        else loadChats(); // si el chat no existe, recargamos los chats para añadir el nuevo chat
+    }
+
+    // suscripcion a nuevas notificaciones de mensajes
+    useNotification(`messages-${user?._id ?? null}`, "new-message", handleNewMessage);
+    
     useEffect(() => {
         loadChats();
     }, [user?._id]);
@@ -51,7 +109,7 @@ const ChatsList = ({onSelect, selected}) => {
     return (
         <>
             {chats?.map((chat) => (
-                <div key={chat.userId} onClick={() => onSelect(chat.user)} className={cn("p-1 lg:p-3 border-b border-gray-800 hover:bg-gray-800 cursor-pointer", {"bg-gray-800": selected?._id === chat?.user?._id})}>
+                <div key={chat.userId} onClick={() => handleSelect(chat)} className={cn("p-1 lg:p-3 border-b border-gray-800 hover:bg-gray-800 cursor-pointer relative", {"bg-gray-800": selected?._id === chat?.user?._id})}>
                     <div className="flex mb-2">
                         <div className="flex items-center">
                             <Avatar src={chat?.user?.avatar} alt={`${chat?.user?.name} ${chat?.user?.lastName}`} size="sm" className="mr-4" />
@@ -66,9 +124,16 @@ const ChatsList = ({onSelect, selected}) => {
                             {new Date(chat.lastMessage?.createdAt).toLocaleDateString()}
                         </div>
                     </div>
+
                     <div className="text-sm text-gray-400 pl-12 truncate">
                         {chat.lastMessage?.content}
                     </div>
+                    
+                    {chat.unreadCount > 0 && (
+                        <span className="text-blue-600 absolute text-xs font-bold rounded-full right-5 border border-blue-500 px-2 py-1 top-8">
+                            {chat.unreadCount}
+                        </span>
+                    )}
                 </div>
             ))}
         </>
