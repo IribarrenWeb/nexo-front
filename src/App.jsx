@@ -12,6 +12,7 @@ import Users from './pages/Users.jsx';
 import { RoleGuard } from './components/guards/RoleGuard.jsx';
 import Post from './pages/Post.jsx';
 import Messages from './pages/Messages.jsx';
+import NotFount from './pages/NotFound.jsx';
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
 		<Route path='/register' element={<Register />} />
 	  </Route>
 
-	  <Route path='*' element={<h1 className='text-center mt-20 text-3xl font-bold'>404</h1>} />
+	  <Route path='*' element={<NotFount/>} />
     </Routes>
   )
 }
