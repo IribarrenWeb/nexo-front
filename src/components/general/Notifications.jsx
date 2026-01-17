@@ -1,4 +1,4 @@
-import { Bell } from "lucide-react"
+import { Bell, Trash2Icon } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 import { notificationService } from "../../services/notification-service"
@@ -40,6 +40,16 @@ const Notifications = () => {
             setNotifications(prev => prev.map(n => ({...n, read: true})))
         } catch (error) {
             toast.error('Error al marcar las notificaciones como leídas')
+        }
+    }
+
+    // eliminar una notificacion
+    const removeNotification = async (id) => {
+        try {
+            await remove(id) // mandamos a eliminar la notificacion en el back
+            setNotifications(prev => prev.filter(n => n._id !== id)) // eliminamos la notificacion del listado
+        } catch (error) {
+            toast.error('Error al eliminar la notificación')
         }
     }
 
@@ -90,7 +100,12 @@ const Notifications = () => {
                                             <div key={notification._id} className={cn("p-1 mb-1 rounded-md cursor-pointer", {
                                                 'bg-gray-800': !notification.read,
                                             })}>
-                                                <h4 className="font-semibold text-gray-200">{notification.title}</h4>
+                                                <div className="flex justify-between items-center">
+                                                    <h4 className="font-semibold text-gray-200 truncate">{notification.title}</h4>
+                                                    <button onClick={() => removeNotification(notification._id)} className="text-gray-500 hover:text-red-600 text-xs">
+                                                        <Trash2Icon className="h-4 w-4" />
+                                                    </button>
+                                                </div>
                                                 {notification.message && <p className="text-sm text-gray-400">{notification.message}</p>}
                                                 <p className="text-xs text-gray-500 mt-1">{new Date(notification.createdAt).toLocaleString()}</p>
                                             </div>
