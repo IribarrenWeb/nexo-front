@@ -23,7 +23,7 @@ const COMMENT_FORM_DEFINITION = [
 ]
 
 const ReplyCreator = ({postId, onReplied, className}) => {
-    const { fullName } = useAuth();
+    const { fullName, user } = useAuth();
     const { formValues, errors, handleChanges, resetForm, isValid, setAsyncValidations } = useForm({
       ...COMMENT_MODEL, post: postId,
     }, COMMENT_FORM_DEFINITION);
@@ -56,7 +56,7 @@ const ReplyCreator = ({postId, onReplied, className}) => {
         <>
             <div className={cn("flex px-4", className)}>
                 <div className="">
-                    <Avatar size="md" alt={fullName} />
+                    <Avatar size="md" src={user?.avatar} alt={fullName} />
                 </div>
                 <div className="w-full ml-4">
                     <Textarea
