@@ -15,7 +15,7 @@ const menus = [
 ];
 
 const Sidebar = () => {
-    const { user } = useAuth();
+    const { user, reloadCount } = useAuth();
     const [unreadMsgCount, setUnreadMsgCount] = useState(0);
     const { getTotalUnread } = messageService();
 
@@ -40,7 +40,7 @@ const Sidebar = () => {
     // si el usuario cambia, recargamos el contador de mensajes no leidos
     useEffect(() => {
         fetchUnreadMessages();
-    }, [user?._id]);
+    }, [user?._id, reloadCount]);
 
     return (
         <aside id="nx-sidebar" className="flex w-20 lg:w-72 transition-all flex-col bg-blend-hard-light border-r border-gray-800 py-4 nx-aside">

@@ -8,7 +8,7 @@ import { cn } from "../utils/helpers";
 import { useNotification } from "../hooks/useNotification";
 
 const ChatsList = ({ref, onSelect, selected}) => {
-    const { user } = useAuth();
+    const { user, setReloadCount, reloadCount } = useAuth();
     const [chats, setChats] = useState([]);
     const { getChats, toRead } = messageService()
     const [loading, setLoading] = useState(false)
@@ -29,11 +29,11 @@ const ChatsList = ({ref, onSelect, selected}) => {
     // funcion para seleccionar un chat
     const handleSelect = async (chat) => {
         onSelect(chat.user);
+        setReloadCount(prev => prev + 1); // forzamos recarga del contador total de mensajes no leidos en el sidebar
 
         // marcamos los mensajes como leidos
         if (chat.unreadCount > 0) {
             await toRead(chat.userId)
-
             // actualizamos el contador de mensajes no leidos a 0
             setChats((prevChats) => {
                 return prevChats.map((c) => {
@@ -49,8 +49,25 @@ const ChatsList = ({ref, onSelect, selected}) => {
         }
     }
 
-    // funcion para actualizar el ultimo mensaje de un chat
+    /**
+     * Actualiza el ultimo mensaje de un chat
+     * - si el chat no existe, recarga los chats
+     * - si el chat existe, actualiza el ultimo mensaje
+     * - si el chat esta seleccionado, marca el mensaje como leido
+     * - actualiza el contador de mensajes no leidos
+     * - ordena los chats por fecha del ultimo mensaje
+     * 
+     * @param {*} message 
+     * @returns 
+     */
     const updateLastMessage = (message) => {
+        const chatExists = chats.findIndex(chat => chat.userId === message.from?._id || chat.userId === message.to?._id); // verificamos si el chat ya existe
+        
+        if (chatExists < 0) {
+            loadChats(); // si el chat no existe, recargamos los chats para añadir el nuevo chat
+            return;
+        }
+
         setChats((prevChats) => {
             const fromId = message.from?._id === user._id ? message.to?._id : message.from?._id;
             const isSelected = selected && selected._id === fromId;

@@ -14,7 +14,7 @@ const ChatDetail = ({fromData, unsetChat, onSendMessage}) => {
     const { user } = useAuth();
     const fromFullName = `${fromData?.name || ''} ${fromData?.lastName || ''}`.trim();
     const infiniteRef = useRef();
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [messages, setMessages] = useState([]);
     const { getMessages, store: sendMessage } = messageService();
     const [newMessage, setNewMessage] = useState(''); 
@@ -22,6 +22,9 @@ const ChatDetail = ({fromData, unsetChat, onSendMessage}) => {
     
     const loadMessages = async () => {
         if (!fromData?._id) return; // si no hay usuario del que cargar mensajes, salimos
+
+        // omitimos la carga si page = 1 ya que esa pagina se cargo enviando page = 0
+        if (page === 1) return;
 
         try {
             infiniteRef.current?.loading();
@@ -79,6 +82,11 @@ const ChatDetail = ({fromData, unsetChat, onSendMessage}) => {
 
     // manejador de nueva notificacion de mensaje
     const handleNewMessage = (message) => {
+        const fromId = fromData?._id ?? null;
+        
+        // si el mensaje no es del usuario con el que estamos chateando, salimos
+        if (message.from !== fromId) return;
+
         // agregamos el nuevo mensaje a la lista de ultimo
         setMessages((prevMessages) => [...prevMessages, message]);
     }
@@ -100,11 +108,10 @@ const ChatDetail = ({fromData, unsetChat, onSendMessage}) => {
 
     return (
         <div id="nx-chat" className="h-full grid grid-rows-[auto_1fr_auto]">
-            <div id="nx-chat-info" className="w-full border-b border-gray-900 flex items-center">
-                <ArrowLeft className="h-6 w-6 m-4 cursor-pointer" onClick={() => unsetChat()} />
-                <span>Chats</span>
-            </div>
-            <div className="flex items-center p-4 border-b border-gray-800">
+            <div id="nx-chat-header" className="flex items-center p-4 border-b border-gray-800">
+                <div id="nx-chat-info" className="w-auto flex items-center rounded-lg hover:bg-gray-800 cursor-pointer mr-3" >
+                    <ArrowLeft className="h-6 w-6 m-4 cursor-pointer" onClick={() => unsetChat()} />
+                </div>
                 <Avatar src={fromData?.avatar} alt={fromFullName} className="h-12 w-12 mr-4" />
                 <div>
                     <h3 className="text-lg font-semibold">{fromFullName}</h3>
@@ -127,25 +134,20 @@ const ChatDetail = ({fromData, unsetChat, onSendMessage}) => {
                     }
                 </InfiniteScroll>
             </div>
-            <div className="grid grid-cols-4 px-8 pt-4 border-t border-gray-800">
-                <div className="col-span-3">
-                    <Textarea 
-                        rows={2} 
-                        onEnter={toSendMessage} 
-                        value={newMessage} 
-                        onChange={(e) => setNewMessage(e?.target?.value)} 
-                        placeholder="Escribe un mensaje..." 
-                        className="h-20" 
-                        containerClass="mb-0" 
-                    />
-                </div>
+            <div id="nx-chat-input" className="relative p-2 border-t border-gray-800">
+                <Textarea 
+                    rows={2} 
+                    onEnter={toSendMessage} 
+                    value={newMessage} 
+                    onChange={(e) => setNewMessage(e?.target?.value)} 
+                    placeholder="Escribe un mensaje..." 
+                    className="h-20 pr-20" 
+                    containerClass="mb-0" 
+                />
 
-                <div className="ml-4 col-span-1 flex items-center">
-                    <Button disabled={newMessage?.trim()?.length === 0} loading={sending} onClick={toSendMessage} className="w-full flex justify-center items-center">
-                        <Send className="mr-2 h-5 w-5" />
-                        Enviar
-                    </Button>
-                </div>
+                <Button disabled={newMessage?.trim()?.length === 0} loading={sending} onClick={toSendMessage} className="w-auto flex justify-center items-center absolute top-2/6 pb-0.5 right-6">
+                    <Send className="mr-2 h-5 w-5" />
+                </Button>
             </div>
         </div>
     )
