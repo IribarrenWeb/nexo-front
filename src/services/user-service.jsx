@@ -77,6 +77,15 @@ export const userService = () => {
         return data;
     }
 
+    const remove = async (userId) => {
+        const { data, error } = await execute(`${BASE_API}${userId}`, 'DELETE');
+        if (error) {
+            toast.error(error.message);
+            throw new Error(JSON.stringify(data)); // enviamos la data en jsonstring para poder parsearla despues
+        }
+        return data;
+    }
+
     return {
         store,
         index,
@@ -84,6 +93,7 @@ export const userService = () => {
         show,
         toFollow,
         showByUsername,
-        toSearch
+        toSearch,
+        remove,
     }
 }

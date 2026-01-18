@@ -84,8 +84,7 @@ const ChatsList = ({ref, onSelect, selected}) => {
     // handler de nueva notificacion de mensaje
     const handleNewMessage = (message) => {
         const chatExists = chats.findIndex(chat => chat.userId === message.from?._id || chat.userId === message.to?._id); // verificamos si el chat ya existe
-        
-        if (chatExists) updateLastMessage(message); // si el chat existe, actualizamos el ultimo mensaje
+        if (chatExists >= 0) updateLastMessage(message); // si el chat existe, actualizamos el ultimo mensaje
         else loadChats(); // si el chat no existe, recargamos los chats para añadir el nuevo chat
     }
 

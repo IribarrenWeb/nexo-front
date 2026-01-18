@@ -42,7 +42,7 @@ const COLUMNS = [
 const UserList = ({onSelect, ref}) => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { index } = userService();
+    const { index, remove } = userService();
     
     // funcion para obtener los usuarios
     const getUsers = async () => {
@@ -56,6 +56,22 @@ const UserList = ({onSelect, ref}) => {
             setLoading(false); // quitamos el loading
         }
     }
+    
+    const toEliminateUser = async (userId) => {
+        try {
+            if (confirm('¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.')){
+                setLoading(true);
+                await remove(userId);
+                toast.success('Usuario eliminado correctamente');
+                getUsers(); // refrescamos la lista
+            }
+        } catch (error) {
+            const errorData = JSON.parse(error.message);
+            toast.error(errorData.mensaje || 'Error al eliminar el usuario');
+        } finally {
+            setLoading(false);
+        }
+    }
 
     // funcion para mostrar el contenido de cada celda segun la columna
     const toShowRow = (data, column) => {
@@ -65,8 +81,13 @@ const UserList = ({onSelect, ref}) => {
             case 'deactivated':
                 const status = value ? "Desactivado" : "Activo";
                 return <Badge color={status === "Activo" ? "green" : "red"}>{status}</Badge>;
-            case 'edit':
-                return <Link onClick={() => onSelect(data)}>{column.name}</Link>;
+            case 'edit': // mostramos link para editar y eliminar
+                return (
+                    <div>
+                        <Link onClick={() => onSelect(data)}>{column.name}</Link>
+                        <Link onClick={() => toEliminateUser(data._id)} className="ml-2 bg-transparent border border-red-600 rounded-lg px-2 py-1 text-red-600 hover:bg-red-600 hover:text-white">Eliminar</Link>
+                    </div>
+                )
             case 'rol':
                 return <Badge className="capitalize" color={value === 'admin' ? 'purple' : 'blue'}>{value}</Badge>;
             case 'createdAt': // formateamos la fecha
@@ -77,6 +98,7 @@ const UserList = ({onSelect, ref}) => {
         }
     }
 
+
     useImperativeHandle(ref, () => ({
         refresh: getUsers, // exponemos la funcion para refrescar la lista
     }));
@@ -86,7 +108,7 @@ const UserList = ({onSelect, ref}) => {
     }, []);
 
     return (
-        <div className="relative overflow-x-auto">
+        <div className="relative overflow-x-auto max-h-[80vh] overflow-y-auto">
             <table className="min-w-full divide-y divide-gray-700">
                 <thead className="min-w-full">
                     <tr>

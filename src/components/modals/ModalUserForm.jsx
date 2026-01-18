@@ -19,13 +19,23 @@ const ModalUserForm = ({ ref, userData, mode, onFinish }) => {
 
         // preparamos los datos a enviar con los campos
         // que nos interesan
-        const dataToSend = {
-            name: data.name,
-            username: data.username,
-            email: data.email,
+
+        // modo admin por defecto
+        // solo podemos editar rol y estado
+        let dataToSend = {
             rol: data.rol,
             deactivated: data.deactivated,
-        };
+        }
+
+        if (mode == 'edit') {
+            // en modo edit solo enviamos los campos editables
+            dataToSend = {
+                name: data.name,
+                username: data.username,
+                email: data.email,
+                bio: data.bio,
+            }
+        }
 
         try {
             setLoading(true); // activamos el loader

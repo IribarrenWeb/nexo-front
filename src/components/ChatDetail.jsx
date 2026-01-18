@@ -117,6 +117,7 @@ const ChatDetail = ({fromData, unsetChat, onSendMessage}) => {
                     scrollTarget="#nx-chat-messages" 
                     className="h-[calc(100vh-300px)] px-4" 
                     reverse={true}
+                    showEmptyMsg={true}
                     loadMore={loadMessages}
                 >
                     {

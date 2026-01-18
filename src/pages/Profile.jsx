@@ -1,4 +1,4 @@
-import { Calendar1, Send } from "lucide-react";
+import { Calendar1, Pencil, Send } from "lucide-react";
 import Avatar from "../components/ui/Avatar";
 import Button from "../components/ui/Button";
 import { useAuth } from "../context/AuthContext";
@@ -118,10 +118,13 @@ const Profile = () => {
 								</div>
 							</div>
 						</div>
-						<div className="flex items-start pt-3 lg:pt-0 lg:items-center h-full justify-end lg:min-w-1/6 ml-4">
+						<div className="flex items-start pt-3 lg:pt-0 lg:items-center h-full justify-end lg:min-w-1/6 ml-2">
 							{
 								isAuthUser ? (
-									<Button className="w-auto" onClick={() => modalRef.current.trigger()}>Editar perfil</Button>
+									<Button size="sm" className="w-auto mx-3" onClick={() => modalRef.current.trigger()}>
+										<Pencil className="inline-block" />
+										<span className="ml-2 lg:hidden">Editar perfil</span>
+									</Button>
 								) : (
 									<>
 										<Button size="sm" loading={loadingFollow} outline={isAuthUserFollow} className="w-auto" onClick={triggerFollow}>
