@@ -45,8 +45,10 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, enableUpdate = f
      * funcion para actualizar el avatar del usuario
      * - lee el archivo seleccionado y lo convierte a base64
      * - envia la imagen al backend para actualizar el avatar
-     * - actualiza el estado del usuario con el nuevo avatar
-     * - se fuerza la recarga del avatar con un estado temporal y un timeout 
+     * - limpia el avatar en el estado para forzar recarga
+     * - se fuerza la recarga del avatar con un estado temporal y un timeout
+     * - luego del timeout, se actualiza el avatar en el estado con la nueva imagen
+     *  
      * @param {*} e 
      * @returns 
      */
@@ -66,7 +68,9 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, enableUpdate = f
             try {
                 setLoading(true);
                 const res = await update(userId, { avatar: base64String });
-                setUser(usr => ({ ...usr, avatar: res.avatar }));
+                setUser(usr => ({ ...usr, avatar: null })); // limpiamos el avatar para forzar recarga
+
+                toast.success('Avatar actualizado correctamente');
                 
                 // forzamos recarga del avatar
                 setReloadAvatar(true)
@@ -74,6 +78,7 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, enableUpdate = f
                 // usamos un timeout para quitar el reload despues de un tiempo
                 setTimeout(() => {
                     setReloadAvatar(false);
+                    setUser(usr => ({ ...usr, avatar: res.avatar })); // actualizamos el avatar
                 }, 500);
 
             } catch (error) {
@@ -119,6 +124,7 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, enableUpdate = f
                     onClick={handleClick}
                     src={src}
                     alt={alt}
+                    onAbort={() => setAvatarError(true)}
                     onError={() => setAvatarError(true)}
                     className={cn(
                         "rounded-full object-cover",
