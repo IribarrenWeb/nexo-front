@@ -23,7 +23,7 @@ const USER_FORM_DEFINITIONS = [
     {
         name: 'bio',
         label: 'Biografía',
-        type: 'textarea',
+        type: 'text',
         rules: ['maxLength:160'],
         showConditions: ['edit'],
     },
