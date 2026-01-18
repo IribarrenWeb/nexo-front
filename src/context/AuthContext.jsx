@@ -21,6 +21,9 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState({...USER_MODEL})
     const fullName = useMemo(() => `${user.name} ${user.lastName}`, [user])
 
+    // estado para forzar recarga del avatar
+    const [reloadAvatar, setReloadAvatar] = useState(false);
+
     const logout = () => {
         setUser({...USER_MODEL})
         localStorage.removeItem('access_token')
@@ -33,7 +36,9 @@ export const AuthProvider = ({children}) => {
         logout,
         isAuth: localStorage.getItem('access_token')?.length ? true : false,
         role: user.rol,
-    }), [user])
+        reloadAvatar,
+        setReloadAvatar,
+    }), [user, reloadAvatar])
 
     return (
         <AuthContext.Provider value={toProvide}>
