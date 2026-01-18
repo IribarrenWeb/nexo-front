@@ -13,13 +13,15 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, enableUpdate = f
     const [avatarError, setAvatarError] = useState(false);
 
     // definimos las clases por tamaño
+    // se le especifica un min y max para evitar que se deforme
+    // ya que con un h-x no siempre se respeta el aspect ratio
     const sizeClasses = {
-        sm: 'min-w-8 h-8',
-        md: 'min-w-12 h-12',
-        lg: 'min-w-16 max-w-16 h-16',
-        xl: 'min-w-24 max-w-24 h-24',
-        xxl: 'min-w-32 max-w-32 h-32',
-        xxxl: 'min-w-30 max-w-30 max-h-30 lg:w-36 lg:h-36 xl:w-40 xl:h-40',
+        sm: 'min-w-8 max-w-8 min-h-8 max-h-8',
+        md: 'min-w-12 max-w-12 min-h-12 max-h-12',
+        lg: 'min-w-16 max-w-16 min-h-16 max-h-16',
+        xl: 'min-w-24 max-w-24 min-h-24 max-h-24',
+        xxl: 'min-w-32 max-w-32 min-h-32 max-h-32',
+        xxxl: 'min-w-30 max-w-30 min-h-30 max-h-30  lg:w-36 lg:h-36 xl:w-40 xl:h-40',
     };
 
     // definimos las clases de texto por tamaño
