@@ -6,6 +6,7 @@ import ModalContent from "../ui/Modal/ModalContent";
 import RegisterForm from "../forms/RegisterForm";
 import Button from "../ui/Button";
 import Loader from "../ui/Loader";
+import { toast } from "sonner";
 
 const ModalUserForm = ({ ref, userData, mode, onFinish }) => {
     const { update } = userService();
@@ -39,10 +40,13 @@ const ModalUserForm = ({ ref, userData, mode, onFinish }) => {
 
         try {
             setLoading(true); // activamos el loader
-            await update(userData._id, dataToSend);
-            toast.success("Usuario actualizado con éxito");
+            const res = await update(userData._id, dataToSend);
+            
+            toast.success("Usuario actualizado con éxito"); // mostramos toast de exito
+
             modalRef.current.close(); // cerramos el modal
-            onFinish(); // llamamos al callback de finalización
+
+            if (onFinish) onFinish(res); // llamamos al callback de finalización
         } catch (error) {
             const err = JSON.parse(error?.message ?? '{}');
             if (err?.errors) editorRef.current.setServerErrors(err.errors); // seteamos los errores en el formulario
@@ -54,6 +58,9 @@ const ModalUserForm = ({ ref, userData, mode, onFinish }) => {
     useImperativeHandle(ref, () => ({
         trigger: () => {
             modalRef.current.trigger();
+        },
+        close: () => {
+            modalRef.current.close();
         }
     }))
 
