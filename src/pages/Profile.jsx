@@ -74,10 +74,15 @@ const Profile = () => {
 		}
 	}
 
+	const onUpdateProfile = async () => {
+		await loadUser(true); // recargamos el usuario autenticado
+		modalRef.current?.close(); // cerramos el modal
+	}
+
 	useEffect(() => {
 		if (!user?._id && !username) return; // si no hay usuario autenticado y no hay username, no hacemos nada
 		loadUser(); // cargamos el usuario
-	}, [username, user._id]);
+	}, [username, user?._id, user?.bio]);
 
 	// si no se encuentra el usuario
 	// mostramos un mensaje informativo
@@ -169,7 +174,7 @@ const Profile = () => {
 				</div>
 			</div>
 
-			<ModalUserForm ref={modalRef} userData={profileUser} mode='edit' onFinish={() => {}} />
+			<ModalUserForm ref={modalRef} userData={profileUser} mode='edit' onFinish={onUpdateProfile} />
 
 			<Loader show={loading} />
 		</>

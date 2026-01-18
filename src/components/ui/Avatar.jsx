@@ -30,8 +30,8 @@ const Avatar = ({ src = null, size = 'md', alt = '', className, enableUpdate = f
         md: 'text-md',
         lg: 'text-lg',
         xl: 'text-xl',
-        xxl: 'text-4xl',
-        xxxl: 'text-4xl lg:text-6xl',
+        xxl: 'text-2xl',
+        xxxl: 'text-4xl',
     };
 
     // extraer las iniciales del alt
