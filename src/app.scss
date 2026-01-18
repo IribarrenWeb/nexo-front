@@ -100,6 +100,11 @@
       display: none;
     }
   }
+  #nx-chat-messages{
+    > div {
+      height: calc(100vh - 250px);
+    }
+  }
   .register-form {
     &.profile-mode {
       min-width: 60vw;
@@ -140,6 +145,11 @@
       grid-column: span 5 / span 5;
     }
   }
+  #nx-chat-messages {
+    >div {
+      height: calc(100vh - 260px);
+    }
+  }
 }
 
 @media (max-width: 650px) {
@@ -151,6 +161,32 @@
       display: block;
     }
   }
+  #nx-chat-container {
+    overflow-y: hidden;
+  }
+
+  #nx-chat-header {
+    padding: 0.5rem !important;
+  }
+
+  #nx-chat-messages{
+    > div {
+      height: calc(100vh - 300px);
+    }
+  }
+
+  #nx-chat {
+    padding-bottom: 3rem;
+    #nx-chat-input{
+      padding: 0.5rem !important;
+      textarea {
+        padding: 0.5rem !important;
+        padding-right: 4.5rem !important;
+        scrollbar-width: none;
+      }
+    }
+  }
+
   #nx-sidebar {
     position: fixed;
     width: 100vw;
