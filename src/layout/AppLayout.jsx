@@ -30,14 +30,16 @@ const AppLayout = () => {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <HeaderApp />
                 <div className="grid grid-cols-1 md:grid-cols-5">
-                    <main id="nx-app-main" className={cn("felx-1 overflow-y-auto md:col-span-3", {"md:col-span-5": path.startsWith('/messages')})}>
+
+                    {/* cuando la ruta es messages o users debe ocupar todas las columnas del grid ya que el asideviral no se mostrara en esas rutas */}
+                    <main id="nx-app-main" className={cn("felx-1 overflow-y-auto md:col-span-3", {"md:col-span-5": path.startsWith('/messages') || path.startsWith('/users')})}>
                         <div className={cn(baseMainClasses)}>
                             <Outlet />
                         </div>
                     </main>
                     {
-                        // no mostramos el aside viral en la pagina de mensajes ya que ocupa mucho espacio y no es relevante
-                        !path.startsWith('/messages') && (
+                        // no mostramos el aside viral en la pagina de mensajes ni users ya que ocupa mucho espacio y no es relevante
+                        !path.startsWith('/messages') && !path.startsWith('/users') && (
                             <AsideViral/>
                         )
                     }
