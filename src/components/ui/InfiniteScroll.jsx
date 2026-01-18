@@ -2,7 +2,7 @@ import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { cn } from "../../utils/helpers";
 import { Loader2 } from "lucide-react";
 
-const InfiniteScroll = ({ ref, children, maxH, offsetH = 100, loadMore, scrollTarget, className, reverse = false }) => {
+const InfiniteScroll = ({ ref, children, maxH, offsetH = 100, loadMore, scrollTarget, className, reverse = false, showEmptyMsg = false }) => {
     const [stop, setStop] = useState(false); // para detener la carga de mas elementos
     const [loading, setLoading] = useState(false); // para indicar que se estan cargando mas elementos
 
@@ -74,7 +74,7 @@ const InfiniteScroll = ({ ref, children, maxH, offsetH = 100, loadMore, scrollTa
             <div className={cn("w-full justify-center my-4", (!loading ? 'hidden' : 'flex'))}>
                 <Loader2 className="animate-spin h-6 w-6 text-blue-500" />
             </div>
-            <div className={cn("w-full justify-center my-4", (!stop ? 'hidden' : 'flex'))}>
+            <div className={cn("w-full justify-center my-4", (!stop || !showEmptyMsg ? 'hidden' : 'flex'))}>
                 <span className="text-gray-500">No hay más elementos para cargar.</span>
             </div>
             { reverse && children}
