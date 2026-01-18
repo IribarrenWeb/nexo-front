@@ -21,6 +21,13 @@ const USER_FORM_DEFINITIONS = [
         disabledConditions: ['admin'],
     },
     {
+        name: 'bio',
+        label: 'Biografía',
+        type: 'textarea',
+        rules: ['maxLength:160'],
+        showConditions: ['edit'],
+    },
+    {
         name: 'username',
         label: 'Username',
         type: 'text',
@@ -111,6 +118,7 @@ const RegisterForm = ({ref, createMode = 'register', userData, children}) => {
                         <Avatar
                             src={formValues['avatar']}
                             size="lg"
+                            enableUpdate={createMode === 'edit'}
                             alt={`${formValues['name']} ${formValues['lastName']}`}
                             className="mb-4 hover:bg-blue-900 transition-all duration-200 cursor-pointer"
                         />
