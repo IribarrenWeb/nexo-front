@@ -24,6 +24,12 @@ export const AuthProvider = ({children}) => {
     // estado para forzar recarga del avatar
     const [reloadAvatar, setReloadAvatar] = useState(false);
 
+    // estado para forzar recarga del contador total de mensajes
+    // no leidos del sidebar. Lo iniciamos en 1, y cada vez que
+    // se necesite recargar, se incrementa en 1 y sidebar lo detecta
+    // en su useEffect y recarga el contador
+    const [reloadCount, setReloadCount] = useState(1);
+
     const logout = () => {
         setUser({...USER_MODEL})
         localStorage.removeItem('access_token')
@@ -38,7 +44,9 @@ export const AuthProvider = ({children}) => {
         role: user.rol,
         reloadAvatar,
         setReloadAvatar,
-    }), [user, reloadAvatar])
+        reloadCount,
+        setReloadCount,
+    }), [user, reloadAvatar, reloadCount]);
 
     return (
         <AuthContext.Provider value={toProvide}>
