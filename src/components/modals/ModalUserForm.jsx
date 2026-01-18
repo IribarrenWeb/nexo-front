@@ -21,6 +21,7 @@ const ModalUserForm = ({ ref, userData, mode, onFinish }) => {
         // que nos interesan
 
         // modo admin por defecto
+        // solo podemos editar rol y estado
         let dataToSend = {
             rol: data.rol,
             deactivated: data.deactivated,
